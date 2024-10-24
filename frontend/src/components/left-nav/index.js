@@ -83,7 +83,7 @@ function DemoPageContent() {
                     </TableCell>
                     <TableCell align="right">{row.pick}</TableCell>
                     <TableCell align="right">{row.points}</TableCell>
-                    <TableCell align="right">{row.total_points}</TableCell>
+                    <TableCell align="right">{row.total_points_scored}</TableCell>
                     <TableCell align="right">{row.total_trades}</TableCell>
                     <TableCell align="right">{row.point_difference}</TableCell>
                     </TableRow>
