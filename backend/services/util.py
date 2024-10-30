@@ -29,6 +29,10 @@ async def get_league_entries():
     response = await fpl_api_clients.get_fpl_details()
     return response["league_entries"]
 
+async def get_league_info():
+    response = await fpl_api_clients.get_fpl_details()
+    return response["league"]
+
 async def get_entry_names():
     league_entries = await get_league_entries()
     entry_names = {entry["id"]: entry["entry_name"] for entry in league_entries}

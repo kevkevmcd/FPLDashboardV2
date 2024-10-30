@@ -1,20 +1,11 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
 import { createTheme } from '@mui/material/styles';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import PointsScoredGraph from '../points-scored';
+import leaguelogo from '../../assets/leaguelogo.png';
 
 const NAVIGATION = [
   {
@@ -44,62 +35,7 @@ const demoTheme = createTheme({
   },
 });
 
-function DemoPageContent() {
-    const [leagueEntries, setLeagueEntries] = useState([]);
-
-    useEffect(() => {
-    axios.get('/league-table')
-        .then(res => setLeagueEntries(res.data))
-        .catch(err => console.error(err));
-    }, []);
-
-  return (
-    <Box
-      sx={{
-        py: 4,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-      }}
-    >
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                <TableRow>
-                    <TableCell>Team Name</TableCell>
-                    <TableCell align="right">Pick</TableCell>
-                    <TableCell align="right">Points</TableCell>
-                    <TableCell align="right">Total Points</TableCell>
-                    <TableCell align="right">Total Trades</TableCell>
-                    <TableCell align="right">Point Difference</TableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody>
-                {leagueEntries.map((row, index) => (
-                    <TableRow key={index}>
-                    <TableCell component="th" scope="row">
-                        {row.team_name}
-                    </TableCell>
-                    <TableCell align="right">{row.pick}</TableCell>
-                    <TableCell align="right">{row.points}</TableCell>
-                    <TableCell align="right">{row.total_points_scored}</TableCell>
-                    <TableCell align="right">{row.total_trades}</TableCell>
-                    <TableCell align="right">{row.point_difference}</TableCell>
-                    </TableRow>
-                ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    </Box>
-  );
-}
-
-DemoPageContent.propTypes = {
-  pathname: PropTypes.string.isRequired,
-};
-
-function DashboardLayoutBranding() {
+function DashboardLayoutBranding({ league_name }) {
 
   const [pathname, setPathname] = React.useState('/dashboard');
 
@@ -115,14 +51,14 @@ function DashboardLayoutBranding() {
     <AppProvider
       navigation={NAVIGATION}
       branding={{
-        logo: <img src="https://mui.com/static/logo.png" alt="MUI logo" />,
-        title: 'MUI',
+        logo: <img src={leaguelogo} alt="League of Stones" />,
+        title: league_name,
       }}
       router={router}
       theme={demoTheme}
     >
       <DashboardLayout>
-        <DemoPageContent />
+        <PointsScoredGraph />
       </DashboardLayout>
     </AppProvider>
   );

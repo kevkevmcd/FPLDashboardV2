@@ -1,85 +1,7 @@
 from typing import Dict, List
-from services.util import get_choices, get_entry_names, get_league_entries, get_matches, get_standings, get_transactions, get_upcoming_gameweek
+from services.util import get_choices, get_entry_names, get_league_entries, get_standings, get_transactions, get_upcoming_gameweek
 from models.manager import Manager
-from models.managerweeklypoints import ManagerWeeklyPoints
-from models.managermatchpoints import ManagerMatchPoints
 from models.managerweeklytrades import ManagerWeeklyTrades
-
-async def weekly_total_points() -> List[ManagerWeeklyPoints]:
-    entry_names = await get_entry_names()
-    gameweek = await get_upcoming_gameweek()
-    matches = await get_matches()
-
-    # Initialize the list of ManagerWeeklyPoints
-    team_points_list = [
-        ManagerWeeklyPoints(team_name=entry_name, points_by_gameweek=[])
-        for entry_name in entry_names.values()
-    ]
-
-    # Create a map from team names to their respective ManagerWeeklyPoints object
-    team_points_map = {team.team_name: team for team in team_points_list}
-
-    for match in matches:
-        event = match["event"]
-        if event > gameweek:
-            break
-
-        league_entry_1 = entry_names[match["league_entry_1"]]
-        league_entry_1_points = match["league_entry_1_points"]
-        league_entry_2 = entry_names[match["league_entry_2"]]
-        league_entry_2_points = match["league_entry_2_points"]
-
-        # Append points for both teams in the current match using the map
-        team_points_map[league_entry_1].points_by_gameweek.append(league_entry_1_points)
-        team_points_map[league_entry_2].points_by_gameweek.append(league_entry_2_points)
-
-    return team_points_list
-
-async def weekly_win_loss_points() -> List[ManagerMatchPoints]:
-    entry_names = await get_entry_names()
-    matches = await get_matches()
-
-    team_points_list = [
-        ManagerMatchPoints(team_name=entry_name, gameweek_points=[])
-        for entry_name in entry_names.values()
-    ]
-
-    # Create a map from team names to their respective ManagerMatchPoints object
-    team_points_map = {team.team_name: team for team in team_points_list}
-
-    # Dictionary to track the cumulative score
-    cumulative_points = {name: 0 for name in entry_names.values()}
-
-    for match in matches:
-        if not match["finished"]:
-            continue
-
-        league_entry_1 = entry_names[match["league_entry_1"]]
-        league_entry_2 = entry_names[match["league_entry_2"]]
-
-        league_entry_1_points = match["league_entry_1_points"]
-        league_entry_2_points = match["league_entry_2_points"]
-
-        # Determine win/loss/draw and add the points
-        if league_entry_1_points > league_entry_2_points:
-            league_entry_1_result = 3
-            league_entry_2_result = 0
-        elif league_entry_1_points < league_entry_2_points:
-            league_entry_1_result = 0
-            league_entry_2_result = 3
-        else:
-            league_entry_1_result = 1
-            league_entry_2_result = 1
-
-        # Add current week points to cumulative points
-        cumulative_points[league_entry_1] += league_entry_1_result
-        cumulative_points[league_entry_2] += league_entry_2_result
-
-        # Append cumulative points for the current week using the map
-        team_points_map[league_entry_1].gameweek_points.append(cumulative_points[league_entry_1])
-        team_points_map[league_entry_2].gameweek_points.append(cumulative_points[league_entry_2])
-
-    return team_points_list
 
 async def weekly_trades() -> List[ManagerWeeklyTrades]:
     transactions = await get_transactions()
@@ -89,7 +11,7 @@ async def weekly_trades() -> List[ManagerWeeklyTrades]:
 
     # Initialize the list of ManagerWeeklyTrades
     trades_list = [
-        ManagerWeeklyTrades(team_name=team_name, trades=[0] * gameweek)
+        ManagerWeeklyTrades(team_name=team_name, trades=[0] * (gameweek - 1))
         for team_name in teams.values()
     ]
 
@@ -100,7 +22,7 @@ async def weekly_trades() -> List[ManagerWeeklyTrades]:
         event = transaction["event"]
         team_id = transaction["entry"]
 
-        if event > gameweek:
+        if event > (gameweek - 1):
             continue
         team_name = teams.get(team_id)
 
