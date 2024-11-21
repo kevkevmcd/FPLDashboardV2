@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { createTheme } from '@mui/material/styles';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import PointsScoredGraph from '../points-scored';
 import leaguelogo from '../../assets/leaguelogo.png';
+import { TableContext } from '../../contexts';
+import { Typography } from '@mui/material';
+import Dashboard from '../dashboard';
 
 const NAVIGATION = [
   {
@@ -14,12 +16,12 @@ const NAVIGATION = [
     icon: <DashboardIcon />,
   },
   {
-    title: 'Blog',
+    title: <Typography onClick={() => window.open('https://www.gosfpl.com/')}>Blog</Typography>,
     icon: <LibraryBooksIcon onClick={() => window.open('https://www.gosfpl.com/')}/>,
   },
 ];
 
-const demoTheme = createTheme({
+const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
@@ -35,30 +37,20 @@ const demoTheme = createTheme({
   },
 });
 
-function DashboardLayoutBranding({ league_name }) {
-
-  const [pathname, setPathname] = React.useState('/dashboard');
-
-  const router = React.useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path) => setPathname(String(path)),
-    };
-  }, [pathname]);
+function DashboardLayoutBranding() {
+  const data = useContext(TableContext)
 
   return (
     <AppProvider
       navigation={NAVIGATION}
       branding={{
         logo: <img src={leaguelogo} alt="League of Stones" />,
-        title: league_name,
+        title: data.leagueData.league_name,
       }}
-      router={router}
-      theme={demoTheme}
+      theme={theme}
     >
       <DashboardLayout>
-        <PointsScoredGraph />
+        <Dashboard />
       </DashboardLayout>
     </AppProvider>
   );

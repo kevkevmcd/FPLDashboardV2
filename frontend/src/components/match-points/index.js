@@ -1,51 +1,64 @@
-import * as React from 'react';
+import React, { useContext, useMemo } from 'react';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { LineChart } from '@mui/x-charts/LineChart';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import colors from '../../utils/chart-colors';
+import { ChartsContext } from '../../contexts';
 
- function MatchPointsGraph() {
-    const [lineChartData, setLineChartData] = useState({
-        series: [],
-        xAxis: [{ data: [] }],
-      });
-    
-      useEffect(() => {
-        axios.get('/weekly-match-points')
-          .then((res) => {
-            const data = res.data;
-    
-            const maxGameweeks = Math.max(...data.map(manager => manager.gameweek_points.length));
-            const xAxisData = Array.from({ length: maxGameweeks }, (_, i) => i + 1);
-    
-            const seriesData = data.map(manager => ({
-              data: manager.gameweek_points,
-              label: manager.team_name,
-              area: false,
-              stack: 'total',
-              highlightScope: {
-                highlighted: 'series',
-                faded: 'global'
-              }
-            }));
-    
-            setLineChartData({
-              series: seriesData,
-              xAxis: [{ data: xAxisData, type: 'linear' }],
-            });
-          })
-          .catch(err => console.error(err));
-      }, []);
+function MatchPointsGraph() {
+  const data = useContext(ChartsContext)
 
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-          <LineChart
-            series={lineChartData.series}
-            xAxis={lineChartData.xAxis}
-            height={400}
-          />
-        </Box>
+  const { lineChartData, xAxisData } = useMemo(() => {
+    if (!data.matchPointsData || data.matchPointsData.length === 0) {
+      return { lineChartData: [], xAxisData: [] };
+    }
+
+    const maxGameweeks = Math.max(
+      ...data.matchPointsData.map((manager) => manager.gameweek_points.length)
     );
-  }
+    const xAxisData = Array.from({ length: maxGameweeks }, (_, i) => i + 1);
 
-  export default MatchPointsGraph;
+    const formattedData = xAxisData.map((week, index) => {
+      const weekData = { week };
+      data.matchPointsData.forEach((manager) => {
+        weekData[manager.team_name] = manager.gameweek_points[index] || 0;
+      });
+      return weekData;
+    });
+
+    return { lineChartData: formattedData, xAxisData };
+  }, [data.matchPointsData]);
+
+  return (
+    <Box sx={{ flexGrow: 1, height: 400 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={lineChartData}>
+          <XAxis 
+            dataKey="week" 
+            ticks={xAxisData} 
+            interval={0} 
+            label={{ value: 'Gameweek', position: 'insideBottomRight', offset: -5 }} 
+          />
+          <YAxis 
+            domain={[0, 42]} 
+            tickCount={15} 
+            interval={3} 
+            label={{ value: 'Points', angle: -90, position: 'insideLeft' }}
+          />
+          <Tooltip />
+          <Legend />
+          {lineChartData.length > 0 && Object.keys(lineChartData[0]).slice(1).map((teamName, index) => (
+            <Line 
+              key={teamName} 
+              type="linear" 
+              dataKey={teamName} 
+              stroke={colors[index % colors.length]} 
+              dot={true} 
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </Box>
+  );
+}
+
+export default MatchPointsGraph;

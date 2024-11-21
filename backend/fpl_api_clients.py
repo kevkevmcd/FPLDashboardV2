@@ -21,3 +21,8 @@ async def get_fpl_choices():
     async with httpx.AsyncClient() as client:
         response = await client.get(f"https://draft.premierleague.com/api/draft/{LEAGUE_CODE}/choices")
     return response.json()
+
+async def get_fpl_player_data():
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"https://draft.premierleague.com/api/bootstrap-static")
+    return response.json()
