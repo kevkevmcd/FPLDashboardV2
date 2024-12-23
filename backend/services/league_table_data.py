@@ -1,7 +1,7 @@
 from typing import Dict, List
 from services.util import get_choices, get_entry_names, get_league_entries, get_standings, get_transactions, get_upcoming_gameweek
 from models.manager import Manager
-from models.managerweeklytrades import ManagerWeeklyTrades
+from models.manager_weekly_trades import ManagerWeeklyTrades
 
 async def weekly_trades() -> List[ManagerWeeklyTrades]:
     transactions = await get_transactions()

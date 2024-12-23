@@ -3,13 +3,14 @@ from fastapi import FastAPI
 from services.league_table_data import combined_table, weekly_trades
 from services.general_data import get_league_name
 from services.weekly_data import weekly_total_points, get_match_points_data
-from services.player_data import get_top_players
+from services.player_data import get_top_players, get_player_statistics
 from models.manager import Manager
-from models.leaguegeneraldata import LeagueGeneralData
-from models.managerweeklypoints import ManagerWeeklyPoints
-from models.matchpoints import MatchPoints
-from models.managerweeklytrades import ManagerWeeklyTrades
-from models.topplayer import TopPlayer
+from models.league_general_data import LeagueGeneralData
+from models.manager_weekly_points import ManagerWeeklyPoints
+from models.match_points import MatchPoints
+from models.manager_weekly_trades import ManagerWeeklyTrades
+from models.top_player import TopPlayer
+from models.player_stats import PlayerStats
 
 app = FastAPI()
 
@@ -49,3 +50,9 @@ async def get_in_form_players():
     top_players = await get_top_players()
 
     return top_players
+
+@app.get("/player-stats", response_model=PlayerStats)
+async def get_player_stats():
+    player_stats = await get_player_statistics()
+
+    return player_stats
