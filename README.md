@@ -14,4 +14,7 @@ Dev steps:
     - cd Frontend
     - docker build . -t frontend
     - docker run --rm --name frontend --network dashboard -p 3000:3000 frontend
+
+Backend testing:
+  - go to localhost:8000/docs
     

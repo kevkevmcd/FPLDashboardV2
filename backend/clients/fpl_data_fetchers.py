@@ -1,4 +1,4 @@
-import fpl_api_clients
+import clients.fpl_api_clients as fpl_api_clients
 
 async def get_matches():
     response = await fpl_api_clients.get_fpl_details()

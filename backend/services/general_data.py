@@ -1,4 +1,4 @@
-from services.util import get_league_info
+from clients.fpl_data_fetchers import get_league_info
 
 async def get_league_name():
      league_info = await get_league_info()

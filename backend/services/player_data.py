@@ -1,8 +1,6 @@
-from services.util import get_player_data
-from models.top_player import TopPlayer
+from clients.fpl_data_fetchers import get_player_data
+from models import TopPlayer, PlayerStats, PlayerStat
 from typing import List, Dict, Any
-from models.player_stats import PlayerStats
-from models.player_stat import PlayerStat
 
 async def get_top_players() -> List[TopPlayer]:
     data = await get_player_data()

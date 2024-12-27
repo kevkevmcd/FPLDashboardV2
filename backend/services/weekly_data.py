@@ -1,7 +1,5 @@
-from services.util import get_entry_names, get_matches, get_upcoming_gameweek
-from models.manager_weekly_points import ManagerWeeklyPoints
-from models.manager_match_points import ManagerMatchPoints
-from models.match_points import MatchPoints
+from clients.fpl_data_fetchers import get_entry_names, get_matches
+from models import ManagerWeeklyPoints, ManagerMatchPoints, MatchPoints
 from typing import List
 
 async def weekly_total_points() -> List[ManagerWeeklyPoints]:
