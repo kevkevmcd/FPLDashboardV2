@@ -1,12 +1,14 @@
 from clients.fpl_data_fetchers import get_entry_names, get_matches
 from models import ManagerWeeklyPoints, ManagerMatchPoints, MatchPoints
 from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
 
 async def weekly_total_points() -> List[ManagerWeeklyPoints]:
     entry_names = await get_entry_names()
     matches = await get_matches()
 
-    # Initialize the list of ManagerWeeklyPoints
     team_points_list = [
         ManagerWeeklyPoints(team_name=entry_name, points_by_gameweek=[])
         for entry_name in entry_names.values()

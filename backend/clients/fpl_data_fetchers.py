@@ -40,4 +40,8 @@ async def get_entry_names():
 
 async def get_player_data():
     response = await fpl_api_clients.get_fpl_player_data()
+
+    if "elements" not in response:
+        return []
+
     return response["elements"]

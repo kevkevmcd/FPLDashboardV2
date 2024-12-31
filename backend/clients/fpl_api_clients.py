@@ -1,28 +1,61 @@
 import httpx
+import logging
 
 LEAGUE_CODE = 192
 
+logger = logging.getLogger(__name__)
+
 async def get_fpl_details():
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://draft.premierleague.com/api/league/{LEAGUE_CODE}/details")
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"https://draft.premierleague.com/api/league/{LEAGUE_CODE}/details")
+            response.raise_for_status()
+
         return response.json()
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Http error, failed to get fpl details: {e}")
+        return {}
     
 async def get_fpl_game():
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://draft.premierleague.com/api/game")
-    return response.json()
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"https://draft.premierleague.com/api/game")
+            response.raise_for_status()
+
+        return response.json()
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Http error, failed to get fpl game: {e}")
+        return {}
 
 async def get_fpl_transactions():
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://draft.premierleague.com/api/draft/league/{LEAGUE_CODE}/transactions")
-    return response.json()
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"https://draft.premierleague.com/api/draft/league/{LEAGUE_CODE}/transactions")
+            response.raise_for_status()
+
+        return response.json()
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Http error, failed to get fpl transactions: {e}")
+        return {}
 
 async def get_fpl_choices():
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://draft.premierleague.com/api/draft/{LEAGUE_CODE}/choices")
-    return response.json()
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"https://draft.premierleague.com/api/draft/{LEAGUE_CODE}/choices")
+            response.raise_for_status()
+
+        return response.json()
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Http error, failed to get fpl choices: {e}")
+        return {}
 
 async def get_fpl_player_data():
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"https://draft.premierleague.com/api/bootstrap-static")
-    return response.json()
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"https://draft.premierleague.com/api/bootstrap-static")
+            response.raise_for_status()
+
+        return response.json()
+    except (httpx.RequestError, httpx.HTTPStatusError) as e:
+        logger.error(f"Http error, failed to get fpl player data: {e}")
+        return {}
