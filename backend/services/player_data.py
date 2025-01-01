@@ -12,8 +12,8 @@ async def get_top_players() -> List[TopPlayer]:
             logger.info("Gameweek one, no top players yet.")
             return []
 
-        data = await get_player_data()
-        if not data:
+        player_data = await get_player_data()
+        if not player_data:
             logger.error("Failed to get player data")
             return []
         
@@ -26,7 +26,7 @@ async def get_top_players() -> List[TopPlayer]:
                 "points_per_game": float(player["points_per_game"]),
                 "total_points": player["total_points"]
             }
-            for player in data
+            for player in player_data
             if float(player["form"]) > 6 and player["minutes"] > 0
         ]
 

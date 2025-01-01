@@ -1,40 +1,50 @@
+import logging
 from typing import Dict, List
 from clients.fpl_data_fetchers import get_choices, get_entry_names, get_league_entries, get_standings, get_transactions, get_upcoming_gameweek
 from models import Manager, ManagerWeeklyTrades
 
-async def weekly_trades() -> List[ManagerWeeklyTrades]:
-    transactions = await get_transactions()
-    league_entries = await get_league_entries()
-    teams = {entry["entry_id"]: entry["entry_name"] for entry in league_entries}
-    gameweek = await get_upcoming_gameweek()
+logger = logging.getLogger(__name__)
 
-    # Initialize the list of ManagerWeeklyTrades
-    trades_list = [
-        ManagerWeeklyTrades(team_name=team_name, trades=[0] * (gameweek - 1))
-        for team_name in teams.values()
-    ]
+async def get_weekly_trades() -> List[ManagerWeeklyTrades]:
+    try:
+        gameweek = await get_upcoming_gameweek()
+        transactions = await get_transactions()
+        league_entries = await get_league_entries()
 
-    # Create a map for quick access to ManagerWeeklyTrades objects by team name
-    trades_map = {trade.team_name: trade for trade in trades_list}
+        if not gameweek or not transactions or not league_entries:
+            logger.error(f"Failed to get data for weekly trades list. Gameweek:{gameweek}, Transactions: {transactions}, League Entries: {league_entries}")
+            return []
 
-    for transaction in transactions:
-        event = transaction["event"]
-        team_id = transaction["entry"]
+        teams = {entry["entry_id"]: entry["entry_name"] for entry in league_entries}
 
-        if event > (gameweek - 1):
-            continue
-        team_name = teams.get(team_id)
+        # Initialize the list of ManagerWeeklyTrades
+        trades_list = [
+            ManagerWeeklyTrades(team_name=team_name, trades=[0] * (gameweek - 1))
+            for team_name in teams.values()
+        ]
 
-        if transaction["result"] == "a":
-            team_trades = trades_map.get(team_name) 
-            team_trades.trades[event - 1] += 1
+        # Create a map for quick access to ManagerWeeklyTrades objects by team name
+        trades_map = {trade.team_name: trade for trade in trades_list}
 
-    return trades_list
+        for transaction in transactions:
+            event = transaction["event"]
+            team_id = transaction["entry"]
 
-async def point_differential() -> Dict[str, int]:
-    entry_names = await get_entry_names()
-    standings = await get_standings()
+            if event > (gameweek - 1):
+                continue
+            team_name = teams.get(team_id)
 
+            if transaction["result"] == "a":
+                team_trades = trades_map.get(team_name) 
+                team_trades.trades[event - 1] += 1
+
+        return trades_list
+    
+    except Exception as e:
+        logger.error(f"Unable to get weekly trades list: {e}")
+        return []
+
+def get_point_differential(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
     team_diffs = {}
     for team in standings:
         team_name = entry_names[team["league_entry"]]
@@ -43,10 +53,7 @@ async def point_differential() -> Dict[str, int]:
 
     return dict(sorted(team_diffs.items(), key=lambda item: item[1], reverse=True))
 
-async def total_points_for() -> Dict[str, int]:
-    entry_names = await get_entry_names()
-    standings = await get_standings()
-
+def get_total_points_for(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
     team_points = {}
     for team in standings:
         team_name = entry_names[team["league_entry"]]
@@ -55,10 +62,7 @@ async def total_points_for() -> Dict[str, int]:
 
     return dict(sorted(team_points.items(), key=lambda item: item[1], reverse=True))
 
-async def total_match_points() -> Dict[str, int]:
-    entry_names = await get_entry_names()
-    standings = await get_standings()
-
+def get_total_match_points(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
     team_match_points = {}
     for team in standings:
         team_name = entry_names[team["league_entry"]]
@@ -67,39 +71,61 @@ async def total_match_points() -> Dict[str, int]:
 
     return dict(sorted(team_match_points.items(), key=lambda item: item[1], reverse=True))
 
-async def pick_order() -> Dict[str, int]:
-    choices = await get_choices()
+async def get_pick_order() -> Dict[str, int]:
+    try:
+        pick_order_dict = {}
 
-    pick_order_dict = {}
-    for choice in choices:
-        if choice["round"] == 1:
-            pick_order_dict[choice["entry_name"]] = choice["pick"]
+        choices = await get_choices()
+        if not choices:
+            logger.error("Failed to get choices data.")
+            return pick_order_dict  
 
-    return pick_order_dict
+        for choice in choices:
+            if choice["round"] == 1:
+                pick_order_dict[choice["entry_name"]] = choice["pick"]
 
-async def combined_table() -> List[Manager]:
-    total_points_data = await total_points_for()
-    match_points_data = await total_match_points()
-    trades = await weekly_trades()
-    point_diffs = await point_differential()
-    pick_order_dict = await pick_order()
+        return pick_order_dict
+    
+    except Exception as e:
+        logger.error(f"Unable to get the pick order: {e}")
+        return pick_order_dict
 
-    result = []
-    for trade in trades:
-        team_name = trade.team_name
-        total_trades = sum(trade.trades)
-        
-        team_stats = Manager(
-            team_name = team_name,
-            total_points_scored = total_points_data.get(team_name, 0),
-            points = match_points_data.get(team_name, 0),
-            total_trades = total_trades,
-            point_difference = point_diffs.get(team_name, 0),
-            pick = pick_order_dict.get(team_name, 0),
-        )
-        result.append(team_stats)
+async def get_manager_data() -> List[Manager]:
+    try:
+        entry_names = await get_entry_names()
+        standings = await get_standings()
+        result = []
 
-    # Sort by points first, then by total_trades if points are the same
-    result.sort(key=lambda x: (x.points, x.total_points_scored), reverse=True)
+        if not entry_names or not standings:
+            logger.error(f"Failed to get data necessary for league table. Entry Names:{entry_names}, Standings: {standings}")
+            return result            
 
-    return result
+        total_points_data = get_total_points_for(entry_names, standings)
+        match_points_data = get_total_match_points(entry_names, standings)
+        point_diffs = get_point_differential(entry_names, standings)
+
+        trades = await get_weekly_trades()
+        pick_order_dict = await get_pick_order()
+
+        for trade in trades:
+            team_name = trade.team_name
+            total_trades = sum(trade.trades)
+            
+            team_stats = Manager(
+                team_name = team_name,
+                total_points_scored = total_points_data.get(team_name, 0),
+                points = match_points_data.get(team_name, 0),
+                total_trades = total_trades,
+                point_difference = point_diffs.get(team_name, 0),
+                pick = pick_order_dict.get(team_name, 0),
+            )
+            result.append(team_stats)
+
+        # Sort by points first, then by total_trades if points are the same
+        result.sort(key=lambda x: (x.points, x.total_points_scored), reverse=True)
+
+        return result
+    
+    except Exception as e:
+        logger.error(f"Unable to get the league table: {e}")
+        return result
