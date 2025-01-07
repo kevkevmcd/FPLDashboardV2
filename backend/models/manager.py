@@ -7,3 +7,4 @@ class Manager(BaseModel):
     total_trades: int
     point_difference: int
     pick: int
+    position: int

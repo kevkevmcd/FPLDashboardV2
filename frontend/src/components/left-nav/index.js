@@ -19,6 +19,18 @@ const NAVIGATION = [
     title: <Typography onClick={() => window.open('https://www.gosfpl.com/')}>Blog</Typography>,
     icon: <LibraryBooksIcon onClick={() => window.open('https://www.gosfpl.com/')}/>,
   },
+  {
+    title: <Typography onClick={() => window.open('https://discord.com/channels/1003362033259003944/1003362033259003947')}>Discord</Typography>,
+    icon: <LibraryBooksIcon onClick={() => window.open('https://discord.com/channels/1003362033259003944/1003362033259003947')}/>,
+  },
+  {
+    title: <Typography onClick={() => window.open('https://draft.premierleague.com/?state=success')}>FPL Draft</Typography>,
+    icon: <LibraryBooksIcon onClick={() => window.open('https://draft.premierleague.com/?state=success')}/>,
+  },
+  {
+    title: <Typography onClick={() => window.open('https://www.premierleague.com/tables')}>Premier League Table</Typography>,
+    icon: <LibraryBooksIcon onClick={() => window.open('https://www.premierleague.com/tables')}/>,
+  },
 ];
 
 const theme = createTheme({

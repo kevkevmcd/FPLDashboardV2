@@ -24,23 +24,21 @@ function Dashboard() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid size={6}>
+        <Grid size={8}>
           <Item>
             <ManagerTable />
           </Item>
         </Grid>
-        <Grid container spacing={1}>
-          <Grid size={4}>
-            <Item>
-                <TopManagers />
-            </Item>
-          </Grid>  
-          <Grid size={4}>
-            <Item>
-                <InFormPlayers />
-            </Item>
-          </Grid> 
-        </Grid>
+        <Grid size={2}>
+          <Item>
+              <TopManagers />
+          </Item>
+        </Grid>  
+        <Grid size={2}>
+          <Item>
+              <InFormPlayers />
+          </Item>
+        </Grid> 
         <Grid size={6}>
           <Item>
             <PointsScoredGraph />

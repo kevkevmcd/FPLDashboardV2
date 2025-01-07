@@ -71,6 +71,15 @@ def get_total_match_points(entry_names: Dict[int, str], standings: List[Dict[str
 
     return dict(sorted(team_match_points.items(), key=lambda item: item[1], reverse=True))
 
+def get_manager_position(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
+    positions = {}
+    for team in standings:
+        team_name = entry_names[team["league_entry"]]
+        manager_rank = team["rank"]
+        positions[team_name] = manager_rank
+
+    return dict(sorted(positions.items(), key=lambda item: item[1], reverse=True))
+
 async def get_pick_order() -> Dict[str, int]:
     try:
         pick_order_dict = {}
@@ -103,6 +112,7 @@ async def get_manager_data() -> List[Manager]:
         total_points_data = get_total_points_for(entry_names, standings)
         match_points_data = get_total_match_points(entry_names, standings)
         point_diffs = get_point_differential(entry_names, standings)
+        manager_ranks = get_manager_position(entry_names, standings)
 
         trades = await get_weekly_trades()
         pick_order_dict = await get_pick_order()
@@ -118,10 +128,10 @@ async def get_manager_data() -> List[Manager]:
                 total_trades = total_trades,
                 point_difference = point_diffs.get(team_name, 0),
                 pick = pick_order_dict.get(team_name, 0),
+                position = manager_ranks.get(team_name, 0)
             )
             result.append(team_stats)
-
-        # Sort by points first, then by total_trades if points are the same
+            
         result.sort(key=lambda x: (x.points, x.total_points_scored), reverse=True)
 
         return result

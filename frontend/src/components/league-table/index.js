@@ -26,6 +26,7 @@ function ManagerTable() {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                 <TableRow>
+                    <TableCell></TableCell>
                     <TableCell>Team Name</TableCell>
                     <TableCell align="right">Pick</TableCell>
                     <TableCell align="right">Points</TableCell>
@@ -37,14 +38,13 @@ function ManagerTable() {
                 <TableBody>
                 {data.leagueEntries.map((row, index) => (
                     <TableRow key={index}>
-                    <TableCell component="th" scope="row">
-                        {row.team_name}
-                    </TableCell>
-                    <TableCell align="right">{row.pick}</TableCell>
-                    <TableCell align="right">{row.points}</TableCell>
-                    <TableCell align="right">{row.total_points_scored}</TableCell>
-                    <TableCell align="right">{row.total_trades}</TableCell>
-                    <TableCell align="right">{row.point_difference}</TableCell>
+                      <TableCell align="left">{row.position}</TableCell>
+                      <TableCell component="th" scope="row">{row.team_name}</TableCell>
+                      <TableCell align="right">{row.pick}</TableCell>
+                      <TableCell align="right">{row.points}</TableCell>
+                      <TableCell align="right">{row.total_points_scored}</TableCell>
+                      <TableCell align="right">{row.total_trades}</TableCell>
+                      <TableCell align="right">{row.point_difference}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
