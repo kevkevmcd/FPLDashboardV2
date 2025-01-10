@@ -19,8 +19,8 @@ async def get_weekly_trades() -> List[ManagerWeeklyTrades]:
 
         # Initialize the list of ManagerWeeklyTrades
         trades_list = [
-            ManagerWeeklyTrades(team_name=team_name, trades=[0] * (gameweek - 1))
-            for team_name in teams.values()
+            ManagerWeeklyTrades(id=entry_id, team_name=team_name, trades=[0] * (gameweek - 1))
+            for entry_id, team_name in teams.items()
         ]
 
         # Create a map for quick access to ManagerWeeklyTrades objects by team name
@@ -115,13 +115,19 @@ async def get_manager_data() -> List[Manager]:
         manager_ranks = get_manager_position(entry_names, standings)
 
         trades = await get_weekly_trades()
+        if not trades:
+            logger.error(f"Failed to get weekly trades data for league table.")
+            return result 
+
         pick_order_dict = await get_pick_order()
 
         for trade in trades:
+            entry_id = trade.id
             team_name = trade.team_name
             total_trades = sum(trade.trades)
             
             team_stats = Manager(
+                id = entry_id,
                 team_name = team_name,
                 total_points_scored = total_points_data.get(team_name, 0),
                 points = match_points_data.get(team_name, 0),

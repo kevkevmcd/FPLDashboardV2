@@ -7,6 +7,8 @@ from .match_points import MatchPoints
 from .player_stat import PlayerStat
 from .player_stats import PlayerStats
 from .top_player import TopPlayer
+from .manager_squad import ManagerSquad
+from .player import Player
 
 __all__ = [
     "Manager",
@@ -18,4 +20,6 @@ __all__ = [
     "PlayerStat",
     "PlayerStats",
     "TopPlayer",
+    "ManagerSquad",
+    "Player",
 ]

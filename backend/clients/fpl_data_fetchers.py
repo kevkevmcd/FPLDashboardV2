@@ -73,3 +73,19 @@ async def get_player_data():
         return []
 
     return response["elements"]
+
+async def get_element_statuses():
+    response = await fpl_api_clients.get_element_status_data()
+
+    if "element_status" not in response:
+        return []    
+
+    return response["element_status"]
+
+async def get_fantasy_player_data():
+    response = await fpl_api_clients.get_fantasy_static_elements()
+
+    if "elements" not in response:
+        return []    
+
+    return response["elements"]

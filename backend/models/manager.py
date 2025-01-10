@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class Manager(BaseModel):
+    id: int
     team_name: str
     points: int
     total_points_scored: int

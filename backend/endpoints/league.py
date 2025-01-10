@@ -1,8 +1,8 @@
 import logging
 from fastapi import APIRouter, HTTPException
 from typing import List
-from services import get_manager_data, get_weekly_trades, get_league_name, weekly_total_points, get_match_points_data
-from models import Manager, LeagueGeneralData, ManagerWeeklyPoints, MatchPoints, ManagerWeeklyTrades
+from services import get_manager_data, get_weekly_trades, get_league_name, weekly_total_points, get_match_points_data, get_squad_data
+from models import Manager, LeagueGeneralData, ManagerWeeklyPoints, MatchPoints, ManagerWeeklyTrades, ManagerSquad
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -63,3 +63,14 @@ async def get_match_points():
     except Exception as e:
         logger.error(f"Error retrieving weekly trades: {e}")
         raise HTTPException(status_code=500, detail="Internal server error while retrieving weekly trades data")
+    
+@router.post("/manager/{manager_id}/squad", response_model=ManagerSquad)
+async def get_manager_squad_data(manager_id: int):
+    try:
+
+        manager_squad = await get_squad_data(manager_id)
+        return manager_squad
+    
+    except Exception as e:
+        logger.error(f"Error retrieving manager squad data: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error while retrieving manager squad data")

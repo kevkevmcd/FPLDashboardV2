@@ -8,6 +8,8 @@ import TopManagers from '../top-manager-list';
 import InFormPlayers from '../in-form-players';
 import MatchPointsGraph from '../match-points';
 import PointsScoredGraph from '../points-scored';
+import PlayerStatCards from '../player-stats';
+import DefensivePlayerStatCards from '../defensive-player-stats';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -23,22 +25,35 @@ const Item = styled(Paper)(({ theme }) => ({
 function Dashboard() {
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={1}>
+        <PlayerStatCards />
+      </Grid>
       <Grid container spacing={2}>
-        <Grid size={8}>
+        <Grid size={6}>
           <Item>
             <ManagerTable />
           </Item>
         </Grid>
-        <Grid size={2}>
-          <Item>
-              <TopManagers />
-          </Item>
-        </Grid>  
-        <Grid size={2}>
-          <Item>
-              <InFormPlayers />
-          </Item>
-        </Grid> 
+      <Grid container spacing={1}>
+          <Grid size={6}>
+            <Item>
+                <TopManagers />
+            </Item>
+          </Grid>  
+          <Grid size={6}>
+            <Item>
+                <InFormPlayers />
+            </Item>
+          </Grid>
+          <Grid size={6}>
+            <Item>
+                <InFormPlayers />
+            </Item>
+          </Grid>  
+      </Grid>
+      <Grid container spacing={1}>
+          <DefensivePlayerStatCards />
+      </Grid>
         <Grid size={6}>
           <Item>
             <PointsScoredGraph />
