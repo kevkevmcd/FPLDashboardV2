@@ -51,9 +51,7 @@ function Dashboard() {
             </Item>
           </Grid>  
       </Grid>
-      <Grid container spacing={1}>
-          <DefensivePlayerStatCards />
-      </Grid>
+        <DefensivePlayerStatCards />
         <Grid size={6}>
           <Item>
             <PointsScoredGraph />

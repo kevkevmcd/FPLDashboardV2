@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,9 +8,27 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { TableContext } from '../../contexts';
+import axios from 'axios';
 
 function ManagerTable() {
   const data = useContext(TableContext)
+  const [open, setOpen] = useState(false)
+  const [managerData, setManagerData] = useState(null)
+
+  const handleOpen = async (managerId) => {
+    try{
+      const response = await axios.post(`/manager/${managerId}/squad`);
+      setManagerData(response.data);
+      setOpen(true)
+    } catch (error) {
+      console.error("Failed to fetch manager squad data", error);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setManagerData(null);
+  };
 
   return (
     <Box
@@ -37,7 +55,7 @@ function ManagerTable() {
                 </TableHead>
                 <TableBody>
                 {data.leagueEntries.map((row, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={index} hover onclick={() => handleOpen(row.id)} sx={{ cursor: 'pointer' }}>
                       <TableCell align="left">{row.position}</TableCell>
                       <TableCell component="th" scope="row">{row.team_name}</TableCell>
                       <TableCell align="right">{row.pick}</TableCell>
