@@ -16,10 +16,7 @@ const NAVIGATION = [
     icon: <DashboardIcon />,
   },
   {
-    title: <Typography onClick={() => window.open('https://www.gosfpl.com/')} sx={{
-      backgroundColor: 'transparent',
-      color: 'inherit',
-    }}>Blog</Typography>,
+    title: <Typography onClick={() => window.open('https://www.gosfpl.com/')}>Blog</Typography>,
     icon: <LibraryBooksIcon onClick={() => window.open('https://www.gosfpl.com/')}/>,
   },
   {
@@ -48,6 +45,20 @@ const theme = createTheme({
       md: 600,
       lg: 1200,
       xl: 1536,
+    },
+  },
+  components: {
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            },
+          },
+        },
+      },
     },
   },
 });

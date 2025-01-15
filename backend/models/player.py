@@ -3,6 +3,7 @@ from typing import Optional
 
 class Player(BaseModel):
     name: Optional[str] = None
+    position: Optional[str] = None
     total_points: Optional[int] = None
     minutes: Optional[int] = None
     starts: Optional[int] = None

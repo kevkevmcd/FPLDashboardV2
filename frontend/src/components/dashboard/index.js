@@ -25,10 +25,8 @@ const Item = styled(Paper)(({ theme }) => ({
 function Dashboard() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={1}>
-        <PlayerStatCards />
-      </Grid>
       <Grid container spacing={2}>
+        <PlayerStatCards />
         <Grid size={6}>
           <Item>
             <ManagerTable />

@@ -72,8 +72,20 @@ async def get_player_data(player_id: int) -> Player:
 
         for player in player_data:
             if player["id"] == player_id:
+                player_position = None
+                match player["element_type"]:
+                    case 1: 
+                        player_position = "GKP"
+                    case 2:
+                        player_position = "DEF"
+                    case 3:
+                        player_position = "MID"
+                    case 4:
+                        player_position = "FWD"
+
                 filtered_player = Player(
-                    name = f"{player['first_name']} {player['second_name']}",
+                    name = player["web_name"],
+                    position = player_position,
                     total_points = player["total_points"],
                     minutes = player["minutes"],
                     starts = player["starts"],
