@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { TableContext } from '../../contexts';
 import axios from 'axios';
 import ManagerModal from './ManagerModal';
+import { Typography } from '@mui/material';
 
 function ManagerTable() {
   const data = useContext(TableContext)
@@ -38,13 +39,15 @@ function ManagerTable() {
     <>
       <Box
         sx={{
-          py: 4,
+          py: 1,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
+          textAlign: 'left',
         }}
       >
+          <Typography variant="h6" component="div" sx={{ mb: 2, ml: 2 }}>
+              League Table
+          </Typography>
           <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>

@@ -17,8 +17,6 @@ function InFormPlayers() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
         p: 2,
         width: '100%',
         maxWidth: 400,

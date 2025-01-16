@@ -24,31 +24,24 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Dashboard() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, padding: 2 }}> 
       <Grid container spacing={2}>
         <PlayerStatCards />
-        <Grid size={6}>
-          <Item>
-            <ManagerTable />
-          </Item>
-        </Grid>
-      <Grid container spacing={1}>
-          <Grid size={6}>
+          <Grid size={2}>
             <Item>
                 <TopManagers />
             </Item>
           </Grid>  
-          <Grid size={6}>
+          <Grid size={8}>
+            <Item>
+              <ManagerTable />
+            </Item>
+        </Grid>
+          <Grid size={2}>
             <Item>
                 <InFormPlayers />
             </Item>
           </Grid>
-          <Grid size={6}>
-            <Item>
-                <InFormPlayers />
-            </Item>
-          </Grid>  
-      </Grid>
         <DefensivePlayerStatCards />
         <Grid size={6}>
           <Item>

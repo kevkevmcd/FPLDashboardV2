@@ -60,18 +60,18 @@ const ManagerModal = ({ open, handleClose, data, loading }) => {
                   <TableCell>YC</TableCell>
                   <TableCell>RC</TableCell>
                   <TableCell>B</TableCell>
-                  <TableCell>PEN ORDER</TableCell>
+                  <TableCell>Pen Order</TableCell>
                   <TableCell>EG</TableCell>
                   <TableCell>EA</TableCell>
                   <TableCell>EGC</TableCell>
-                  <TableCell>EG per 90</TableCell>
-                  <TableCell>EA per 90</TableCell>
-                  <TableCell>EGI per 90</TableCell>
-                  <TableCell>S per 90</TableCell>
-                  <TableCell>CS per 90</TableCell>
-                  <TableCell>PENS SAVE</TableCell>
-                  <TableCell>PENS MISS</TableCell>
-                  <TableCell>FORM</TableCell>
+                  <TableCell>EG/90</TableCell>
+                  <TableCell>EA/90</TableCell>
+                  <TableCell>EGI/90</TableCell>
+                  <TableCell>S/90</TableCell>
+                  <TableCell>CS/90</TableCell>
+                  <TableCell>Pens Saved</TableCell>
+                  <TableCell>Pens Miss</TableCell>
+                  <TableCell>Form</TableCell>
                   <TableCell>BPS</TableCell>
                   <TableCell>I</TableCell>
                   <TableCell>C</TableCell>
