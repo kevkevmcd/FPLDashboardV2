@@ -1,5 +1,5 @@
 from clients.fpl_data_fetchers import get_entry_names, get_matches, get_upcoming_gameweek
-from models import ManagerWeeklyPoints, ManagerMatchPoints, MatchPoints
+from models import ManagerWeeklyPoints, ManagerMatchPoints, MatchPoints, WeeklyPoints, WeeklyStats
 from typing import List
 import logging
 
@@ -51,6 +51,52 @@ async def weekly_total_points() -> List[ManagerWeeklyPoints]:
     except Exception as e:
         logger.error(f"Unable to get list of weekly total points: {e}")
         return []
+    
+    
+async def get_league_weekly_stats() -> List[WeeklyStats]:
+    try:
+        gameweek = await get_upcoming_gameweek()
+        if gameweek == 1:
+            logger.info("Gameweek one, no top players yet.")
+            return []
+        
+        team_points_list = await weekly_total_points()
+        if not team_points_list:
+            logger.info("No team points available for weekly stats.")
+            return []
+        
+        num_gameweeks = len(team_points_list[0].points_by_gameweek) if team_points_list else 0
+
+        weekly_stats_list = []
+
+        for week in range(num_gameweeks):
+            week_points = [
+                team.points_by_gameweek[week] for team in team_points_list
+            ]
+            week_teams = [team.team_name for team in team_points_list]
+
+            most_points = max(week_points)
+            least_points = min(week_points)
+            average_points = round(sum(week_points) / len(team_points_list), 2) if week_points else 0
+
+            most_team = week_teams[week_points.index(most_points)]
+            least_team = week_teams[week_points.index(least_points)]
+
+            weekly_stats = WeeklyStats(
+                week_high_points = WeeklyPoints(team_name = most_team, points = most_points),
+                week_low_points = WeeklyPoints(team_name = least_team, points = least_points),
+                week_average_points = average_points
+            )
+
+            weekly_stats_list.append(weekly_stats)
+
+        return weekly_stats_list
+
+
+    except Exception as e:
+        logger.error(f"Unable to get weekly league stats data: {e}")
+        return []
+    
 
 async def get_match_points_data() -> MatchPoints:
     try:

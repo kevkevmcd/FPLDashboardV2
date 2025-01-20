@@ -1,35 +1,40 @@
 import React, { useContext } from 'react';
 import { createTheme } from '@mui/material/styles';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import leaguelogo from '../../assets/leaguelogo.png';
+import pitch from '../../assets/pitch.jpg';
 import { TableContext } from '../../contexts';
 import { Typography } from '@mui/material';
 import Dashboard from '../dashboard';
+import ArticleIcon from '@mui/icons-material/Article';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 
 const NAVIGATION = [
   {
     segment: 'dashboard',
     title: 'Dashboard',
     icon: <DashboardIcon />,
+    sx: { color: 'primary' },
   },
   {
     title: <Typography onClick={() => window.open('https://www.gosfpl.com/')}>Blog</Typography>,
-    icon: <LibraryBooksIcon onClick={() => window.open('https://www.gosfpl.com/')}/>,
+    icon: <ArticleIcon onClick={() => window.open('https://www.gosfpl.com/')}/>,
   },
   {
     title: <Typography gutterBottom onClick={() => window.open('https://discord.com/channels/1003362033259003944/1003362033259003947')}>Discord</Typography>,
-    icon: <LibraryBooksIcon onClick={() => window.open('https://discord.com/channels/1003362033259003944/1003362033259003947')}/>,
+    icon: <HeadsetMicIcon onClick={() => window.open('https://discord.com/channels/1003362033259003944/1003362033259003947')}/>,
   },
   {
-    title: <Typography gutterBottom onClick={() => window.open('https://draft.premierleague.com/?state=success')}>FPL Draft</Typography>,
-    icon: <LibraryBooksIcon onClick={() => window.open('https://draft.premierleague.com/?state=success')}/>,
+    title: <Typography gutterBottom onClick={() => window.open('https://draft.premierleague.com')}>FPL Draft</Typography>,
+    icon: <SportsSoccerIcon onClick={() => window.open('https://draft.premierleague.com')}/>,
   },
   {
     title: <Typography gutterBottom onClick={() => window.open('https://www.premierleague.com/tables')}>Premier League Table</Typography>,
-    icon: <LibraryBooksIcon onClick={() => window.open('https://www.premierleague.com/tables')}/>,
+    icon: <TableRowsIcon onClick={() => window.open('https://www.premierleague.com/tables')}/>,
   },
 ];
 
@@ -71,13 +76,22 @@ function DashboardLayoutBranding() {
       navigation={NAVIGATION}
       branding={{
         logo: <img src={leaguelogo} alt="League of Stones" />,
-        title: data.leagueData.league_name,
+        title: data.leagueData.league_name + " - Gameweek " + data.leagueData.gameweek,
       }}
       theme={theme}
     >
-      <DashboardLayout>
-        <Dashboard />
-      </DashboardLayout>
+        <DashboardLayout >
+        <div   
+        style={{
+        backgroundImage: `url(${pitch})`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        display: 'flex',
+      }}>
+          <Dashboard gameweek={data.leagueData.gameweek}/>
+          </div>
+        </DashboardLayout>
     </AppProvider>
   );
 }

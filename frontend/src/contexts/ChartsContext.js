@@ -8,6 +8,8 @@ export const ChartsProvider = ({ children }) => {
     const [matchPointsData, setMatchPointsData] = useState([]);
     const [inFormManagers, setInFormManagers] = useState({});
     const [inFormPlayers, setInFormPlayers] = useState([]);
+    const [trades, setTradesData] = useState([])
+    const [weeklyStats, setWeeklyStats] = useState([])
 
     useEffect(() => {
     const fetchPointsScoredData = async () => {
@@ -49,8 +51,34 @@ export const ChartsProvider = ({ children }) => {
     fetchInFormPlayers();
   }, []);   
 
+  useEffect(() => {
+    const fetchWeeklyTrades = async () => {
+      try {
+        const response = await axios.get('/weekly-trades');
+        setTradesData(response.data);
+      } catch (error) {
+        console.error('Error fetching weekly trades data:', error);
+      }
+    };
+  
+    fetchWeeklyTrades();
+  }, []);   
+  
+  useEffect(() => {
+    const fetchWeeklyStats = async () => {
+      try {
+        const response = await axios.get('/weekly-stats');
+        setWeeklyStats(response.data);
+      } catch (error) {
+        console.error('Error fetching weekly stats data:', error);
+      }
+    };
+  
+    fetchWeeklyStats();
+  }, []);  
+  
   return (
-    <ChartsContext.Provider value={{ pointsScoredData, matchPointsData, inFormManagers, inFormPlayers }}>
+    <ChartsContext.Provider value={{ pointsScoredData, matchPointsData, inFormManagers, inFormPlayers, weeklyStats, trades }}>
       {children}
     </ChartsContext.Provider>
   );

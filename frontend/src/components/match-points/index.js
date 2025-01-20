@@ -21,6 +21,8 @@ const chartModalStyle = {
 function MatchPointsGraph() {
   const data = useContext(ChartsContext)
   const [open, setOpen] = useState(false)
+  const [hoveredLine, setHoveredLine] = useState(null)
+  const [opacity, setOpacity] = useState({});
 
   const { lineChartData, xAxisData } = useMemo(() => {
     if (!data.matchPointsData || data.matchPointsData.length === 0) {
@@ -45,6 +47,16 @@ function MatchPointsGraph() {
 
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
+
+  const handleLegendMouseEnter = (o) => {
+    const { dataKey } = o;
+    setOpacity((prev) => ({ ...prev, [dataKey]: 4 }));
+  };
+
+  const handleLegendMouseLeave = (o) => {
+    const { dataKey } = o;
+    setOpacity((prev) => ({ ...prev, [dataKey]: 2 }));
+  };
 
   return (
     <>
@@ -71,6 +83,10 @@ function MatchPointsGraph() {
                 dataKey={teamName} 
                 stroke={colors[index % colors.length]} 
                 dot={true} 
+                strokeWidth={hoveredLine === teamName ? 4 : 2}
+                opacity={hoveredLine === null || hoveredLine === teamName ? 1 : 0.3}
+                onMouseEnter={() => setHoveredLine(teamName)}
+                onMouseLeave={() => setHoveredLine(null)}
               />
             ))}
           </LineChart>
@@ -85,7 +101,7 @@ function MatchPointsGraph() {
                 dataKey="week" 
                 ticks={xAxisData} 
                 interval={0} 
-                label={{ value: 'Gameweek', position: 'insideBottomRight', offset: -5 }} 
+                label={{ value: 'Gameweek', position: 'insideBottomRight', offset: -5}} 
               />
               <YAxis 
                 domain={[0, 100]} 
@@ -94,7 +110,10 @@ function MatchPointsGraph() {
                 label={{ value: 'Match Points', angle: -90, position: 'insideLeft' }}
               />
               <Tooltip />
-              <Legend/>
+              <Legend 
+                onMouseEnter={handleLegendMouseEnter}
+                onMouseLeave={handleLegendMouseLeave}
+              />
               {lineChartData.length > 0 && Object.keys(lineChartData[0]).slice(1).map((teamName, index) => (
                 <Line 
                   key={teamName} 
@@ -102,6 +121,10 @@ function MatchPointsGraph() {
                   dataKey={teamName} 
                   stroke={colors[index % colors.length]} 
                   dot={true} 
+                  strokeWidth={opacity[teamName] !== undefined ? opacity[teamName] : 2}
+                  opacity={hoveredLine === null || hoveredLine === teamName ? 1 : 0.3}
+                  onMouseEnter={() => setHoveredLine(teamName)}
+                  onMouseLeave={() => setHoveredLine(null)}
                 />
               ))}
             </LineChart>

@@ -77,26 +77,26 @@ async def get_player_statistics() -> PlayerStats:
 
 def get_most_goals(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["goals_scored"])
-    return PlayerStat(name = player["web_name"], value = player["goals_scored"])
+    return PlayerStat(name = player["web_name"], value = player["goals_scored"], code = player["code"])
 
 def get_most_cards(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["yellow_cards"] + x["red_cards"])
-    return PlayerStat(name = player["web_name"], value = player["yellow_cards"] + player["red_cards"])
+    return PlayerStat(name = player["web_name"], value = player["yellow_cards"] + player["red_cards"], code = player["code"])
 
 def get_most_saves(data: List[Dict[str, Any]]) -> PlayerStat:
     goalkeepers = [player for player in data if player["element_type"] == 1]
     player = max(goalkeepers, key=lambda x: x["saves"])
-    return PlayerStat(name = player["web_name"], value = player["saves"])
+    return PlayerStat(name = player["web_name"], value = player["saves"], code = player["code"])
 
 def get_most_own_goals(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["own_goals"])
-    return PlayerStat(name = player["web_name"], value = player["own_goals"])
+    return PlayerStat(name = player["web_name"], value = player["own_goals"], code = player["code"])
 
 def get_most_clean_sheets(data: List[Dict[str, Any]]) -> PlayerStat:
     eligible_players = [player for player in data if player["element_type"] in {1, 2}]
     player = max(eligible_players, key=lambda x: (x["clean_sheets"], x["minutes"]))
-    return PlayerStat(name = player["web_name"], value = player["clean_sheets"])
+    return PlayerStat(name = player["web_name"], value = player["clean_sheets"], code = player["code"])
 
 def get_most_bonus_points(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["bonus"])
-    return PlayerStat(name = player["web_name"], value = player["bonus"])
+    return PlayerStat(name = player["web_name"], value = player["bonus"], code = player["code"])

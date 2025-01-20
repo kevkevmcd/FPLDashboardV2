@@ -38,6 +38,7 @@ async def get_weekly_trades() -> List[ManagerWeeklyTrades]:
                 team_trades = trades_map.get(team_name) 
                 team_trades.trades[event - 1] += 1
 
+        trades_list.sort(key=lambda x: x.team_name)
         return trades_list
     
     except Exception as e:

@@ -10,6 +10,10 @@ import MatchPointsGraph from '../match-points';
 import PointsScoredGraph from '../points-scored';
 import PlayerStatCards from '../player-stats';
 import DefensivePlayerStatCards from '../defensive-player-stats';
+import { Typography } from '@mui/material';
+import pitch from '../../assets/pitch.jpg';
+import WeeklyStatsChart from '../weekly-stats';
+import WeeklyTradesGraph from '../trades';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
@@ -22,39 +26,57 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function Dashboard() {
+function Dashboard({ gameweek }) {
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}> 
-      <Grid container spacing={2}>
-        <PlayerStatCards />
-          <Grid size={2}>
-            <Item>
-                <TopManagers />
-            </Item>
-          </Grid>  
-          <Grid size={8}>
-            <Item>
-              <ManagerTable />
-            </Item>
-        </Grid>
-          <Grid size={2}>
-            <Item>
-                <InFormPlayers />
-            </Item>
+    <>
+      {!gameweek ? (
+        <Box sx={{ justifyContent: 'center', alignItems: 'center', backgroundImage: { pitch }}}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Come Back Soon When Next Season Starts!</Typography>
+        </Box>       
+      ) : (
+        <Box sx={{ flexGrow: 1, padding: 2, backgroundImage: { pitch }}}> 
+          <Grid container spacing={2}>
+            <PlayerStatCards />
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                <Item>
+                    <TopManagers />
+                </Item>
+              </Grid>  
+              <Grid size={{ xs: 12, sm: 12, md: 8 }}>
+                <Item>
+                  <ManagerTable />
+                </Item>
+            </Grid>
+              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+                <Item>
+                    <InFormPlayers />
+                </Item>
+              </Grid>
+            <DefensivePlayerStatCards />
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+              <Item>
+                <PointsScoredGraph />
+              </Item>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+              <Item>
+                <MatchPointsGraph />
+              </Item>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+              <Item>
+                <WeeklyStatsChart />
+              </Item>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+              <Item>
+                <WeeklyTradesGraph />
+              </Item>
+            </Grid>
           </Grid>
-        <DefensivePlayerStatCards />
-        <Grid size={6}>
-          <Item>
-            <PointsScoredGraph />
-          </Item>
-        </Grid>
-        <Grid size={6}>
-          <Item>
-            <MatchPointsGraph />
-          </Item>
-        </Grid>
-      </Grid>
-    </Box>
+        </Box>
+      )}
+    </>
   );
 }
 

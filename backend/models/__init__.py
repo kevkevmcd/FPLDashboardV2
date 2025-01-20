@@ -9,6 +9,8 @@ from .player_stats import PlayerStats
 from .top_player import TopPlayer
 from .manager_squad import ManagerSquad
 from .player import Player
+from .weekly_points import WeeklyPoints
+from .weekly_stats import WeeklyStats
 
 __all__ = [
     "Manager",
@@ -22,4 +24,6 @@ __all__ = [
     "TopPlayer",
     "ManagerSquad",
     "Player",
+    "WeeklyPoints",
+    "WeeklyStats",
 ]

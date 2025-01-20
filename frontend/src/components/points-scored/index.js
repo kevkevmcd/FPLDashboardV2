@@ -21,6 +21,7 @@ const chartModalStyle = {
 function PointsScoredGraph() {
   const data = useContext(ChartsContext);
   const [open, setOpen] = useState(false);
+  const [hoveredLine, setHoveredLine] = useState(null);
 
   const { lineChartData, xAxisData } = useMemo(() => {
     if (!data.pointsScoredData || data.pointsScoredData.length === 0) {
@@ -102,6 +103,10 @@ function PointsScoredGraph() {
                   dataKey={teamName} 
                   stroke={colors[index % colors.length]} 
                   dot={true} 
+                  strokeWidth={hoveredLine === teamName ? 4 : 2}
+                  opacity={hoveredLine === null || hoveredLine === teamName ? 1 : 0.3}
+                  onMouseEnter={() => setHoveredLine(teamName)}
+                  onMouseLeave={() => setHoveredLine(null)}
                 />
               ))}
             </LineChart>

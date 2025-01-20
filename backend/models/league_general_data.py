@@ -2,4 +2,5 @@ from pydantic import BaseModel
 from typing import Optional
 
 class LeagueGeneralData(BaseModel):
-    league_name: Optional[str]
+    league_name: Optional[str] = None
+    gameweek: Optional[int] = None
