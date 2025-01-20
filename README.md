@@ -12,9 +12,15 @@ Dev steps:
 
   - Frontend:
     - cd Frontend
+    - npm install
+    - npm start
+      OR
     - docker build . -t frontend
     - docker run --rm --name frontend --network dashboard -p 3000:3000 frontend
 
 Backend testing:
   - go to localhost:8000/docs
+
+Frontend testing:
+  - localhost:3000
     
