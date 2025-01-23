@@ -18,7 +18,6 @@ const NAVIGATION = [
     segment: 'dashboard',
     title: 'Dashboard',
     icon: <DashboardIcon />,
-    sx: { color: 'primary' },
   },
   {
     title: <Typography onClick={() => window.open('https://www.gosfpl.com/')}>Blog</Typography>,
@@ -42,16 +41,12 @@ const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: 'data-toolpad-color-scheme',
   },
-  colorSchemes: { light: true, dark: true },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
+  typography: {
+    allVariants: {
+      color: 'theme.palette.primary.main'
+    }
   },
+  colorSchemes: { light: true, dark: true },
   components: {
     MuiListItemButton: {
       styleOverrides: {

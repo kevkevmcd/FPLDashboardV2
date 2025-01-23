@@ -67,7 +67,9 @@ async def get_player_statistics() -> PlayerStats:
             most_saves = get_most_saves(data),
             most_own_goals = get_most_own_goals(data),
             most_clean_sheets = get_most_clean_sheets(data),
-            most_bonus_points = get_most_bonus_points(data)
+            most_bonus_points = get_most_bonus_points(data),
+            most_assists = get_most_assists(data),
+            most_penalty_saves = get_most_penalty_saves(data),
         )
     
     except Exception as e:
@@ -79,6 +81,10 @@ def get_most_goals(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["goals_scored"])
     return PlayerStat(name = player["web_name"], value = player["goals_scored"], code = player["code"])
 
+def get_most_assists(data: List[Dict[str, Any]]) -> PlayerStat:
+    player = max(data, key=lambda x: x["assists"])
+    return PlayerStat(name = player["web_name"], value = player["assists"], code = player["code"])
+
 def get_most_cards(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["yellow_cards"] + x["red_cards"])
     return PlayerStat(name = player["web_name"], value = player["yellow_cards"] + player["red_cards"], code = player["code"])
@@ -87,6 +93,11 @@ def get_most_saves(data: List[Dict[str, Any]]) -> PlayerStat:
     goalkeepers = [player for player in data if player["element_type"] == 1]
     player = max(goalkeepers, key=lambda x: x["saves"])
     return PlayerStat(name = player["web_name"], value = player["saves"], code = player["code"])
+
+def get_most_penalty_saves(data: List[Dict[str, Any]]) -> PlayerStat:
+    goalkeepers = [player for player in data if player["element_type"] == 1]
+    player = max(goalkeepers, key=lambda x: x["penalties_saved"])
+    return PlayerStat(name = player["web_name"], value = player["penalties_saved"], code = player["code"])
 
 def get_most_own_goals(data: List[Dict[str, Any]]) -> PlayerStat:
     player = max(data, key=lambda x: x["own_goals"])

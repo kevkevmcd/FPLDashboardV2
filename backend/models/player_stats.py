@@ -9,3 +9,5 @@ class PlayerStats(BaseModel):
     most_own_goals: Optional[PlayerStat] = None
     most_clean_sheets: Optional[PlayerStat] = None
     most_bonus_points: Optional[PlayerStat] = None
+    most_assists: Optional[PlayerStat] = None
+    most_penalty_saves: Optional[PlayerStat] = None

@@ -48,7 +48,7 @@ const ManagerModal = ({ open, handleClose, data, loading }) => {
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
-                  <TableCell></TableCell>
+                  <TableCell>Name</TableCell>
                   <TableCell>POS</TableCell>
                   <TableCell>Points</TableCell>
                   <TableCell>MP</TableCell>
@@ -59,6 +59,8 @@ const ManagerModal = ({ open, handleClose, data, loading }) => {
                   <TableCell>OG</TableCell>
                   <TableCell>YC</TableCell>
                   <TableCell>RC</TableCell>
+                  <TableCell>S</TableCell>
+                  <TableCell>PPG</TableCell>
                   <TableCell>B</TableCell>
                   <TableCell>Pen Order</TableCell>
                   <TableCell>EG</TableCell>

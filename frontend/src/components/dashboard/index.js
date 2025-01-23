@@ -11,7 +11,6 @@ import PointsScoredGraph from '../points-scored';
 import PlayerStatCards from '../player-stats';
 import DefensivePlayerStatCards from '../defensive-player-stats';
 import { Typography } from '@mui/material';
-import pitch from '../../assets/pitch.jpg';
 import WeeklyStatsChart from '../weekly-stats';
 import WeeklyTradesGraph from '../trades';
 
@@ -19,6 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
+  boxShadow: '0 7px 15px rgba(0,0,0,1)',
   textAlign: 'center',
   color: theme.palette.text.secondary,
   ...theme.applyStyles('dark', {
@@ -30,13 +30,12 @@ function Dashboard({ gameweek }) {
   return (
     <>
       {!gameweek ? (
-        <Box sx={{ justifyContent: 'center', alignItems: 'center', backgroundImage: { pitch }}}>
+        <Box sx={{ justifyContent: 'center', alignItems: 'center' }}>
           <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Come Back Soon When Next Season Starts!</Typography>
         </Box>       
       ) : (
-        <Box sx={{ flexGrow: 1, padding: 2, backgroundImage: { pitch }}}> 
+        <Box sx={{ flexGrow: 1, padding: 2 }}> 
           <Grid container spacing={2}>
-            <PlayerStatCards />
               <Grid size={{ xs: 12, sm: 6, md: 2 }}>
                 <Item>
                     <TopManagers />
@@ -52,7 +51,6 @@ function Dashboard({ gameweek }) {
                     <InFormPlayers />
                 </Item>
               </Grid>
-            <DefensivePlayerStatCards />
             <Grid size={{ xs: 12, sm: 6, md: 6 }}>
               <Item>
                 <PointsScoredGraph />
@@ -73,6 +71,8 @@ function Dashboard({ gameweek }) {
                 <WeeklyTradesGraph />
               </Item>
             </Grid>
+            <PlayerStatCards />
+            <DefensivePlayerStatCards />
           </Grid>
         </Box>
       )}

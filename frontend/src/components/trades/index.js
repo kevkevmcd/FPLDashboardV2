@@ -1,9 +1,10 @@
 import React, { useContext, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 import colors from '../../utils/chart-colors';
 import { ChartsContext } from '../../contexts';
 import Modal from '@mui/material/Modal';
+import { Typography } from '@mui/material';
 
 const chartModalStyle = {
   position: 'absolute',
@@ -49,36 +50,11 @@ function WeeklyTradesGraph() {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, height: 400 }} onClick={handleOpen} style={{ cursor: 'pointer' }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={lineChartData}>
-            <XAxis 
-              dataKey="week" 
-              ticks={xAxisData} 
-              interval={0} 
-              label={{ value: 'Gameweek', position: 'insideBottomRight', offset: -5 }} 
-            />
-            <YAxis
-              domain={[0, 10]}
-              tickCount={11}
-              label={{ value: 'Trades', angle: -90, position: 'insideLeft' }}
-            />
-            <Tooltip />
-            {lineChartData.length > 0 && Object.keys(lineChartData[0]).slice(1).map((teamName, index) => (
-              <Line 
-                key={teamName} 
-                type="linear" 
-                dataKey={teamName} 
-                stroke={colors[index % colors.length]} 
-                dot={true} 
-              />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
-      </Box>  
-
-      <Modal open={open} onClose={handleClose} aria-labelledby="points-graph-modal">        
-        <Box sx={chartModalStyle}>
+      <Box sx={{ flexGrow: 1, height: 400, display: 'flex', flexDirection: 'column', }} onClick={handleOpen} style={{ cursor: 'pointer' }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+            Trades Per Week
+        </Typography>
+        <Box sx={{ flexGrow: 1 }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={lineChartData}>
               <XAxis 
@@ -92,7 +68,38 @@ function WeeklyTradesGraph() {
                 tickCount={11}
                 label={{ value: 'Trades', angle: -90, position: 'insideLeft' }}
               />
-              <Tooltip />
+              <Tooltip contentStyle={{ backgroundColor: '#1A2027', padding: '10px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}/>
+              {lineChartData.length > 0 && Object.keys(lineChartData[0]).slice(1).map((teamName, index) => (
+                <Line 
+                  key={teamName} 
+                  type="linear" 
+                  dataKey={teamName} 
+                  stroke={colors[index % colors.length]} 
+                  dot={true} 
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        </Box>
+      </Box>  
+
+      <Modal open={open} onClose={handleClose} aria-labelledby="trades-graph-modal">        
+        <Box sx={chartModalStyle}>
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={lineChartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="week" 
+                ticks={xAxisData} 
+                interval={0} 
+                label={{ value: 'Gameweek', position: 'insideBottomRight', offset: -5 }} 
+              />
+              <YAxis
+                domain={[0, 10]}
+                tickCount={11}
+                label={{ value: 'Trades', angle: -90, position: 'insideLeft' }}
+              />
+              <Tooltip contentStyle={{ backgroundColor: '#1A2027', padding: '10px', borderRadius: '5px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}/>
               <Legend />
               {lineChartData.length > 0 && Object.keys(lineChartData[0]).slice(1).map((teamName, index) => (
                 <Line 
@@ -101,7 +108,7 @@ function WeeklyTradesGraph() {
                   dataKey={teamName} 
                   stroke={colors[index % colors.length]} 
                   dot={true} 
-                  strokeWidth={hoveredLine === teamName ? 4 : 2}
+                  strokeWidth={hoveredLine === teamName ? 5 : 3}
                   opacity={hoveredLine === null || hoveredLine === teamName ? 1 : 0.3}
                   onMouseEnter={() => setHoveredLine(teamName)}
                   onMouseLeave={() => setHoveredLine(null)}
