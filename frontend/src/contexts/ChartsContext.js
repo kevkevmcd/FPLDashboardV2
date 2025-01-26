@@ -8,13 +8,14 @@ export const ChartsProvider = ({ children }) => {
     const [matchPointsData, setMatchPointsData] = useState([]);
     const [inFormManagers, setInFormManagers] = useState({});
     const [inFormPlayers, setInFormPlayers] = useState([]);
-    const [trades, setTradesData] = useState([])
-    const [weeklyStats, setWeeklyStats] = useState([])
+    const [trades, setTradesData] = useState([]);
+    const [weeklyStats, setWeeklyStats] = useState([]);
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
     const fetchPointsScoredData = async () => {
       try {
-        const response = await axios.get('/weekly-points-scored');
+        const response = await axios.get(`${backendUrl}/weekly-points-scored`);
         setPointsScoredData(response.data);
       } catch (error) {
         console.error('Error fetching points scored data:', error);
@@ -27,7 +28,7 @@ export const ChartsProvider = ({ children }) => {
   useEffect(() => {
     const fetchMatchPointsData = async () => {
       try {
-        const response = await axios.get('/weekly-match-points');
+        const response = await axios.get(`${backendUrl}/weekly-match-points`);
         setMatchPointsData(response.data.manager_match_points);
         setInFormManagers(response.data.in_form_managers);
       } catch (error) {
@@ -41,7 +42,7 @@ export const ChartsProvider = ({ children }) => {
   useEffect(() => {
     const fetchInFormPlayers = async () => {
       try {
-        const response = await axios.get('/in-form-players');
+        const response = await axios.get(`${backendUrl}/in-form-players`);
         setInFormPlayers(response.data);
       } catch (error) {
         console.error('Error fetching in form players data:', error);
@@ -54,7 +55,7 @@ export const ChartsProvider = ({ children }) => {
   useEffect(() => {
     const fetchWeeklyTrades = async () => {
       try {
-        const response = await axios.get('/weekly-trades');
+        const response = await axios.get(`${backendUrl}/weekly-trades`);
         setTradesData(response.data);
       } catch (error) {
         console.error('Error fetching weekly trades data:', error);
@@ -67,7 +68,7 @@ export const ChartsProvider = ({ children }) => {
   useEffect(() => {
     const fetchWeeklyStats = async () => {
       try {
-        const response = await axios.get('/weekly-stats');
+        const response = await axios.get(`${backendUrl}/weekly-stats`);
         setWeeklyStats(response.data);
       } catch (error) {
         console.error('Error fetching weekly stats data:', error);

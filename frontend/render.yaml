@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: frontend-service
+    plan: free
+    repo: https://github.com/kevkevmcd/FPLDashboardV2
+    branch: master
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    publishDirectory: build
+    autoDeploy: true
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        value: https://fpldashboardv2.onrender.com   

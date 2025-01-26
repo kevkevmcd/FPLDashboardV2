@@ -13,6 +13,7 @@ Dev steps:
   - Frontend:
     - cd Frontend
     - npm install
+    - add "proxy": "http://localhost:8000" to package.json
     - npm start
       OR
     - docker build . -t frontend
