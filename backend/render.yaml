@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: backend-service
+    env: python
+    plan: free
+    repo: https://github.com/kevkevmcd/FPLDashboardV2
+    branch: master
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 8000
