@@ -70,7 +70,14 @@ function DashboardLayoutBranding() {
       navigation={NAVIGATION}
       branding={{
         logo: <img src={leaguelogo} alt="League of Stones" />,
-        title: data.leagueData.league_name + " - Gameweek " + data.leagueData.gameweek,
+        title: (
+          <Typography variant="h5" color="#42a5f5">
+            {data.leagueData.league_name} -{' '}
+            <span style={{ color: '#ff5722', fontSize: '1.2rem', fontWeight: 'bold' }}>
+              Gameweek {data.leagueData.gameweek}
+            </span>
+          </Typography>
+        ),
       }}
       theme={theme}
     >

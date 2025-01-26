@@ -33,11 +33,12 @@ function InFormPlayers() {
         {data.inFormPlayers.map((player) => (
           <React.Fragment key={player.id}>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => handleToggle(player.id)}>
+              <ListItemButton onClick={() => handleToggle(player.id)} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                 <ListItemText
                   primary={player.name}
+                  sx={{ textAlign: 'left' }}
                 />
-                <ListItemIcon>
+                <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'flex-end' }}>
                   {openPlayerId === player.id ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                 </ListItemIcon>
               </ListItemButton>

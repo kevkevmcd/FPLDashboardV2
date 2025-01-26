@@ -12,7 +12,6 @@ function TopManagers() {
           flexDirection: 'column',
           p: 2,
           width: '100%',
-          maxWidth: 400,
           bgcolor: 'background.paper',
           alignItems: 'center',
           borderRadius: 2,
