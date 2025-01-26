@@ -82,6 +82,10 @@ function PointsScoredGraph() {
                   dataKey={teamName} 
                   stroke={colors[index % colors.length]} 
                   dot={true} 
+                  strokeWidth={hoveredLine === teamName ? 4 : 2}
+                  opacity={hoveredLine === null || hoveredLine === teamName ? 1 : 0.3}
+                  onMouseEnter={() => setHoveredLine(teamName)}
+                  onMouseLeave={() => setHoveredLine(null)}
                 />
               ))}
             </LineChart>

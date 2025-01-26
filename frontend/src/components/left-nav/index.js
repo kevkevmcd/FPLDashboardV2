@@ -15,9 +15,8 @@ import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
 
 const NAVIGATION = [
   {
-    segment: 'dashboard',
-    title: 'Dashboard',
-    icon: <DashboardIcon />,
+    title: <Typography>Dashboard</Typography>,
+    icon: <DashboardIcon/>,
   },
   {
     title: <Typography onClick={() => window.open('https://www.gosfpl.com/')}>Blog</Typography>,

@@ -14,6 +14,7 @@ function TopManagers() {
           width: '100%',
           maxWidth: 400,
           bgcolor: 'background.paper',
+          alignItems: 'center',
           borderRadius: 2,
           boxShadow: 1,
         }}

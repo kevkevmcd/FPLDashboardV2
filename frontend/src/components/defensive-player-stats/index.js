@@ -34,15 +34,20 @@ function DefensivePlayerStatCards() {
     <>
       {statEntries.map((stat, index) =>
         stat.data && (
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
             <Item>
-              <Card key={index}>
-                  <CardMedia 
+              <Card sx={{ display: 'flex', alignItems: 'center', padding: 1 }}>
+                  <CardMedia
                       component="img"
                       image={`https://resources.premierleague.com/premierleague/photos/players/110x140/p${stat.data.code}.png`}
-                      sx={{ width: '15%', height: 'auto', margin: '0 auto', padding: 1 }}
-                    />
-                  <CardContent>
+                      sx={{
+                        width: 110, 
+                        height: 140, 
+                        objectFit: 'contain', 
+                        marginRight: 2 
+                      }}
+                  />
+                  <CardContent sx={{ flex: 1 }}>
                     <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
                         {stat.title}
                     </Typography>

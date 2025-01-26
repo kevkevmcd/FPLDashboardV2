@@ -36,7 +36,7 @@ function Dashboard({ gameweek }) {
       ) : (
         <Box sx={{ flexGrow: 1, padding: 2 }}> 
           <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+              <Grid size={{ xs: 12, sm: 12, md: 2 }}>
                 <Item>
                     <TopManagers />
                 </Item>
@@ -46,7 +46,7 @@ function Dashboard({ gameweek }) {
                   <ManagerTable />
                 </Item>
             </Grid>
-              <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+              <Grid size={{ xs: 12, sm: 12, md: 2 }}>
                 <Item>
                     <InFormPlayers />
                 </Item>
