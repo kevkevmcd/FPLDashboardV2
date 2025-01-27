@@ -9,6 +9,8 @@ origins = [
     "http://localhost:3000", 
     "https://fpl-dashboard.com",
     "https://fpldashboardv2-fe.onrender.com/",  
+    "https://www.fpl-dashboard.com",
+    "https://www.fpldashboardv2-fe.onrender.com/",  
 ]
 
 app.add_middleware(
