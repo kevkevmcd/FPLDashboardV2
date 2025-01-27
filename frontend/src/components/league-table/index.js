@@ -17,13 +17,14 @@ function ManagerTable() {
   const [open, setOpen] = useState(false)
   const [managerData, setManagerData] = useState(null)
   const [loading, setLoading] = useState(false)
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   const handleOpen = async (managerId) => {
     setLoading(true);
     setOpen(true);
 
     try{
-      const response = await axios.post(`/manager/${managerId}/squad`);
+      const response = await axios.post(`${backendUrl}/manager/${managerId}/squad`);
       setManagerData(response.data);
     } finally {
       setLoading(false);
