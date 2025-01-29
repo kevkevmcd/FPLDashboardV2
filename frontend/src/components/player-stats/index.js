@@ -25,9 +25,9 @@ function PlayerStatCards() {
 
   const statEntries = [
     { title: "Most Goals", data: data.playerStats.most_goals },
-    { title: "Most Own Goals", data: data.playerStats.most_own_goals },
-    { title: "Most Bonus Points", data: data.playerStats.most_bonus_points },
     { title: "Most Assists", data: data.playerStats.most_assists },
+    { title: "Most Clean Sheets", data: data.playerStats.most_clean_sheets },
+    { title: "Most Saves", data: data.playerStats.most_saves },
   ];
 
   return (

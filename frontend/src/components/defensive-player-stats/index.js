@@ -24,10 +24,10 @@ function DefensivePlayerStatCards() {
   const data = useContext(TableContext)
 
   const statEntries = [
-    { title: "Most Saves", data: data.playerStats.most_saves },
-    { title: "Most Clean Sheets", data: data.playerStats.most_clean_sheets },
-    { title: "Most Cards", data: data.playerStats.most_cards },
     { title: "Most Penalties Saved", data: data.playerStats.most_penalty_saves },
+    { title: "Most Cards", data: data.playerStats.most_cards },
+    { title: "Most Own Goals", data: data.playerStats.most_own_goals },
+    { title: "Most Bonus Points", data: data.playerStats.most_bonus_points },
   ];
 
   return (
