@@ -55,11 +55,14 @@ function ManagerTable() {
                   <TableRow>
                       <TableCell></TableCell>
                       <TableCell>Team Name</TableCell>
-                      <TableCell align="right">Pick</TableCell>
+                      <TableCell align="right">W</TableCell>
+                      <TableCell align="right">D</TableCell>
+                      <TableCell align="right">L</TableCell>
                       <TableCell align="right">Points</TableCell>
-                      <TableCell align="right">Total Points</TableCell>
-                      <TableCell align="right">Total Trades</TableCell>
-                      <TableCell align="right">Point Difference</TableCell>
+                      <TableCell align="right">Points Scored</TableCell>
+                      <TableCell align="right">Diff</TableCell>
+                      <TableCell align="right">Trades</TableCell>
+                      <TableCell align="right">Pick</TableCell>
                   </TableRow>
                   </TableHead>
                   <TableBody>
@@ -67,11 +70,14 @@ function ManagerTable() {
                       <TableRow key={index} hover onClick={() => handleOpen(row.id)} sx={{ cursor: 'pointer' }}>
                         <TableCell align="left">{row.position}</TableCell>
                         <TableCell component="th" scope="row">{row.team_name}</TableCell>
-                        <TableCell align="right">{row.pick}</TableCell>
+                        <TableCell align="right">{row.wins}</TableCell>
+                        <TableCell align="right">{row.draws}</TableCell>
+                        <TableCell align="right">{row.losses}</TableCell>
                         <TableCell align="right">{row.points}</TableCell>
                         <TableCell align="right">{row.total_points_scored}</TableCell>
-                        <TableCell align="right">{row.total_trades}</TableCell>
                         <TableCell align="right">{row.point_difference}</TableCell>
+                        <TableCell align="right">{row.total_trades}</TableCell>
+                        <TableCell align="right">{row.pick}</TableCell>
                       </TableRow>
                   ))}
                   </TableBody>

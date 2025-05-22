@@ -45,42 +45,6 @@ async def get_weekly_trades() -> List[ManagerWeeklyTrades]:
         logger.error(f"Unable to get weekly trades list: {e}")
         return []
 
-def get_point_differential(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
-    team_diffs = {}
-    for team in standings:
-        team_name = entry_names[team["league_entry"]]
-        diff = team["points_for"] - team["points_against"]
-        team_diffs[team_name] = diff
-
-    return dict(sorted(team_diffs.items(), key=lambda item: item[1], reverse=True))
-
-def get_total_points_for(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
-    team_points = {}
-    for team in standings:
-        team_name = entry_names[team["league_entry"]]
-        points = team["points_for"]
-        team_points[team_name] = points
-
-    return dict(sorted(team_points.items(), key=lambda item: item[1], reverse=True))
-
-def get_total_match_points(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
-    team_match_points = {}
-    for team in standings:
-        team_name = entry_names[team["league_entry"]]
-        total_match_points = team["matches_drawn"] + (team["matches_won"] * 3)
-        team_match_points[team_name] = total_match_points
-
-    return dict(sorted(team_match_points.items(), key=lambda item: item[1], reverse=True))
-
-def get_manager_position(entry_names: Dict[int, str], standings: List[Dict[str, int]]) -> Dict[str, int]:
-    positions = {}
-    for team in standings:
-        team_name = entry_names[team["league_entry"]]
-        manager_rank = team["rank"]
-        positions[team_name] = manager_rank
-
-    return dict(sorted(positions.items(), key=lambda item: item[1], reverse=True))
-
 async def get_pick_order() -> Dict[str, int]:
     try:
         pick_order_dict = {}
@@ -110,11 +74,6 @@ async def get_manager_data() -> List[Manager]:
             logger.error(f"Failed to get data necessary for league table. Entry Names:{entry_names}, Standings: {standings}")
             return result            
 
-        total_points_data = get_total_points_for(entry_names, standings)
-        match_points_data = get_total_match_points(entry_names, standings)
-        point_diffs = get_point_differential(entry_names, standings)
-        manager_ranks = get_manager_position(entry_names, standings)
-
         trades = await get_weekly_trades()
         if not trades:
             logger.error(f"Failed to get weekly trades data for league table.")
@@ -122,20 +81,29 @@ async def get_manager_data() -> List[Manager]:
 
         pick_order_dict = await get_pick_order()
 
-        for trade in trades:
-            entry_id = trade.id
-            team_name = trade.team_name
-            total_trades = sum(trade.trades)
-            
+        # Create a map for quick access to trades by team name
+        trades_map = {trade.team_name: trade for trade in trades}
+
+        for team in standings:
+            team_name = entry_names.get(team["league_entry"])
+            if not team_name:
+                continue
+
+            trade_data = trades_map.get(team_name)
+            total_trades = sum(trade_data.trades) if trade_data else 0
+
             team_stats = Manager(
-                id = entry_id,
-                team_name = team_name,
-                total_points_scored = total_points_data.get(team_name, 0),
-                points = match_points_data.get(team_name, 0),
-                total_trades = total_trades,
-                point_difference = point_diffs.get(team_name, 0),
-                pick = pick_order_dict.get(team_name, 0),
-                position = manager_ranks.get(team_name, 0)
+                id=team["league_entry"],
+                team_name=team_name,
+                total_points_scored=team["points_for"],
+                points=team["matches_drawn"] + (team["matches_won"] * 3),
+                total_trades=total_trades,
+                point_difference=team["points_for"] - team["points_against"],
+                pick=pick_order_dict.get(team_name, 0),
+                position=team["rank"],
+                wins=team["matches_won"],
+                draws=team["matches_drawn"],
+                losses=team["matches_lost"],
             )
             result.append(team_stats)
             

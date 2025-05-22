@@ -9,3 +9,6 @@ class Manager(BaseModel):
     point_difference: int
     pick: int
     position: int
+    wins: int
+    draws: int
+    losses: int
