@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def weekly_total_points() -> List[ManagerWeeklyPoints]:
+async def weekly_total_points(league_code: int) -> List[ManagerWeeklyPoints]:
 
     try:
         gameweek = await get_upcoming_gameweek()
@@ -13,12 +13,12 @@ async def weekly_total_points() -> List[ManagerWeeklyPoints]:
             logger.info("Gameweek one, no top players yet.")
             return []
         
-        entry_names = await get_entry_names()
+        entry_names = await get_entry_names(league_code)
         if not entry_names:
             logger.error("Failed to get entry names")
             return []
         
-        matches = await get_matches()
+        matches = await get_matches(league_code)
         if not matches:
             logger.error("Failed to get matches")
             return []
@@ -53,14 +53,14 @@ async def weekly_total_points() -> List[ManagerWeeklyPoints]:
         return []
     
     
-async def get_league_weekly_stats() -> List[WeeklyStats]:
+async def get_league_weekly_stats(league_code: int) -> List[WeeklyStats]:
     try:
         gameweek = await get_upcoming_gameweek()
         if gameweek == 1:
             logger.info("Gameweek one, no top players yet.")
             return []
         
-        team_points_list = await weekly_total_points()
+        team_points_list = await weekly_total_points(league_code)
         if not team_points_list:
             logger.info("No team points available for weekly stats.")
             return []
@@ -98,19 +98,19 @@ async def get_league_weekly_stats() -> List[WeeklyStats]:
         return []
     
 
-async def get_match_points_data() -> MatchPoints:
+async def get_match_points_data(league_code: int) -> MatchPoints:
     try:
         gameweek = await get_upcoming_gameweek()
         if gameweek == 1:
             logger.info("Gameweek one, no top players yet.")
             return MatchPoints()
         
-        entry_names = await get_entry_names()
+        entry_names = await get_entry_names(league_code)
         if not entry_names:
             logger.error("Failed to get entry names")
             return MatchPoints()
         
-        matches = await get_matches()
+        matches = await get_matches(league_code)
         if not matches:
             logger.error("Failed to get matches")
             return MatchPoints()

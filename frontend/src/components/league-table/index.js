@@ -24,7 +24,7 @@ function ManagerTable() {
     setOpen(true);
 
     try{
-      const response = await axios.post(`${backendUrl}/manager/${managerId}/squad`);
+      const response = await axios.get(`${backendUrl}/manager/${managerId}/squad?league_code=${data.leagueCode}`);
       setManagerData(response.data);
     } finally {
       setLoading(false);

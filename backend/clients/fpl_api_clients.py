@@ -1,14 +1,14 @@
 import httpx
 import logging
 
-LEAGUE_CODE = 192
+#LEAGUE_CODE = 192
 
 logger = logging.getLogger(__name__)
 
-async def get_fpl_details():
+async def get_fpl_details(league_code: int):
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"https://draft.premierleague.com/api/league/{LEAGUE_CODE}/details")
+            response = await client.get(f"https://draft.premierleague.com/api/league/{league_code}/details")
             response.raise_for_status()
 
         return response.json()
@@ -27,10 +27,10 @@ async def get_fpl_game():
         logger.error(f"Http error, failed to get fpl game: {e}")
         return {}
 
-async def get_fpl_transactions():
+async def get_fpl_transactions(league_code: int):
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"https://draft.premierleague.com/api/draft/league/{LEAGUE_CODE}/transactions")
+            response = await client.get(f"https://draft.premierleague.com/api/draft/league/{league_code}/transactions")
             response.raise_for_status()
 
         return response.json()
@@ -38,10 +38,10 @@ async def get_fpl_transactions():
         logger.error(f"Http error, failed to get fpl transactions: {e}")
         return {}
 
-async def get_fpl_choices():
+async def get_fpl_choices(league_code: int):
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"https://draft.premierleague.com/api/draft/{LEAGUE_CODE}/choices")
+            response = await client.get(f"https://draft.premierleague.com/api/draft/{league_code}/choices")
             response.raise_for_status()
 
         return response.json()
@@ -60,10 +60,10 @@ async def get_fpl_player_data():
         logger.error(f"Http error, failed to get fpl player data: {e}")
         return {}
     
-async def get_element_status_data():
+async def get_element_status_data(league_code: int):
     try:
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"https://draft.premierleague.com/api/league/{LEAGUE_CODE}/element-status")
+            response = await client.get(f"https://draft.premierleague.com/api/league/{league_code}/element-status")
             response.raise_for_status()
 
         return response.json()

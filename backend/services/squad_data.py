@@ -5,24 +5,26 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def get_squad_data(manager_id: int) -> ManagerSquad:
+async def get_squad_data(manager_id: int, league_code: int) -> ManagerSquad:
     try:
-        managers = await get_league_entries()
+        managers = await get_league_entries(league_code)
         if not managers:
             logger.error("Could not get league entries.")
             return ManagerSquad()
         
-        player_ids = await get_player_id_list(manager_id)
-        if not player_ids:
-            logger.error(f"Could not find players with manager id: {manager_id}")
-            return ManagerSquad()
-
         manager_name = None
         team_name = None
+        entry_id = None
         for manager in managers:
-            if manager["entry_id"] == manager_id:
+            if manager["id"] == manager_id:
                 manager_name = f"{manager['player_first_name']} {manager['player_last_name']}"
                 team_name = manager["entry_name"]
+                entry_id = manager["entry_id"]
+        
+        player_ids = await get_player_id_list(entry_id, league_code)
+        if not player_ids:
+            logger.error(f"Could not find players with entry id: {entry_id}")
+            return ManagerSquad()
 
         squad = []
         for player_id in player_ids:
@@ -43,11 +45,11 @@ async def get_squad_data(manager_id: int) -> ManagerSquad:
         logger.error(f"Could not get manager squad data based on manager id: {manager_id}")
         return ManagerSquad()
 
-async def get_player_id_list(manager_id: int) -> List[int]:
+async def get_player_id_list(manager_id: int, league_code: int) -> List[int]:
     try:
         player_ids = []
 
-        player_status_data = await get_element_statuses()
+        player_status_data = await get_element_statuses(league_code)
         if not player_status_data:
             logger.error("Failed to get player status data for manager squad")
             return player_ids

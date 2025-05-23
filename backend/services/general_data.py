@@ -3,8 +3,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def get_league_name():
-     league_info = await get_league_info()
+async def get_league_name(league_code: int):
+     league_info = await get_league_info(league_code)
      if not league_info:
           logger.error("Failed to get league info")
           return ""

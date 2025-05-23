@@ -5,11 +5,11 @@ from models import Manager, ManagerWeeklyTrades
 
 logger = logging.getLogger(__name__)
 
-async def get_weekly_trades() -> List[ManagerWeeklyTrades]:
+async def get_weekly_trades(league_code: int) -> List[ManagerWeeklyTrades]:
     try:
         gameweek = await get_upcoming_gameweek()
-        transactions = await get_transactions()
-        league_entries = await get_league_entries()
+        transactions = await get_transactions(league_code)
+        league_entries = await get_league_entries(league_code)
 
         if not gameweek or not transactions or not league_entries:
             logger.error(f"Failed to get data for weekly trades list. Gameweek:{gameweek}, Transactions: {transactions}, League Entries: {league_entries}")
@@ -45,11 +45,11 @@ async def get_weekly_trades() -> List[ManagerWeeklyTrades]:
         logger.error(f"Unable to get weekly trades list: {e}")
         return []
 
-async def get_pick_order() -> Dict[str, int]:
+async def get_pick_order(league_code: int) -> Dict[str, int]:
     try:
         pick_order_dict = {}
 
-        choices = await get_choices()
+        choices = await get_choices(league_code)
         if not choices:
             logger.error("Failed to get choices data.")
             return pick_order_dict  
@@ -64,22 +64,23 @@ async def get_pick_order() -> Dict[str, int]:
         logger.error(f"Unable to get the pick order: {e}")
         return pick_order_dict
 
-async def get_manager_data() -> List[Manager]:
+async def get_manager_data(league_code: int) -> List[Manager]:
     try:
-        entry_names = await get_entry_names()
-        standings = await get_standings()
+        # TODO: I don't need to call these separately, they both call the same endpoint
+        entry_names = await get_entry_names(league_code)
+        standings = await get_standings(league_code)
         result = []
 
         if not entry_names or not standings:
             logger.error(f"Failed to get data necessary for league table. Entry Names:{entry_names}, Standings: {standings}")
             return result            
 
-        trades = await get_weekly_trades()
+        trades = await get_weekly_trades(league_code)
         if not trades:
             logger.error(f"Failed to get weekly trades data for league table.")
             return result 
 
-        pick_order_dict = await get_pick_order()
+        pick_order_dict = await get_pick_order(league_code)
 
         # Create a map for quick access to trades by team name
         trades_map = {trade.team_name: trade for trade in trades}

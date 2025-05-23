@@ -6,7 +6,7 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import leaguelogo from '../../assets/leaguelogo.png';
 import pitch from '../../assets/pitch.jpg';
 import { TableContext } from '../../contexts';
-import { Typography } from '@mui/material';
+import { Typography, Select, MenuItem } from '@mui/material';
 import Dashboard from '../dashboard';
 import ArticleIcon from '@mui/icons-material/Article';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
@@ -62,17 +62,33 @@ const theme = createTheme({
   },
 });
 
-function DashboardLayoutBranding() {
+function DashboardLayoutBranding({ leagues, selectedLeague, setSelectedLeague }) {
   const data = useContext(TableContext)
 
   return (
     <AppProvider
       navigation={NAVIGATION}
       branding={{
-        logo: <img src={leaguelogo} alt="League of Stones" />,
+        logo: <img src={leaguelogo} alt={selectedLeague.name} />,
         title: (
           <Typography variant="h5" color="#42a5f5">
-            {data.leagueData.league_name} -{' '}
+            <Select
+              value={selectedLeague.code}
+              onChange={e => {
+                const league = leagues.find(l => l.code === e.target.value);
+                setSelectedLeague(league);
+              }}
+              variant="standard"
+              disableUnderline
+              sx={{ color: "#42a5f5", fontWeight: "bold", fontSize: "1.2rem" }}
+            >
+              {leagues.map(league => (
+                <MenuItem key={league.code} value={league.code}>
+                  {league.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {' - '}
             <span style={{ color: '#ff5722', fontSize: '1.2rem', fontWeight: 'bold' }}>
               Gameweek {data.leagueData.gameweek}
             </span>
