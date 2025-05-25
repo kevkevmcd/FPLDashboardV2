@@ -3,6 +3,8 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid2';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import ManagerTable from '../league-table';
 import TopManagers from '../top-manager-list';
 import InFormPlayers from '../in-form-players';
@@ -30,43 +32,66 @@ function Dashboard({ gameweek }) {
   return (
     <>
       {!gameweek ? (
-        <Box sx={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Come Back Soon When Next Season Starts!</Typography>
-        </Box>       
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '60vh',
+            width: '100vw',
+          }}
+        >
+          <Card sx={{ minWidth: 300, p: 2, boxShadow: 3 }}>
+            <CardContent>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 'bold',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  textAlign: 'center',
+                }}
+              >
+                Come Back When Next Season Starts!
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>   
       ) : (
         <Box sx={{ flexGrow: 1, padding: 2 }}> 
           <Grid container spacing={2}>
-              <Grid size={{ xs: 12, sm: 12, md: 2 }}>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 2 }}>
                 <Item>
                     <TopManagers />
                 </Item>
               </Grid>  
-              <Grid size={{ xs: 12, sm: 12, md: 8 }}>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 8 }}>
                 <Item>
                   <ManagerTable />
                 </Item>
             </Grid>
-              <Grid size={{ xs: 12, sm: 12, md: 2 }}>
+              <Grid size={{ xs: 12, sm: 12, md: 12, lg: 2 }}>
                 <Item>
                     <InFormPlayers />
                 </Item>
               </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
               <Item>
                 <PointsScoredGraph />
               </Item>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
               <Item>
                 <MatchPointsGraph />
               </Item>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
               <Item>
                 <WeeklyStatsChart />
               </Item>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6, md: 6 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 12, lg: 6 }}>
               <Item>
                 <WeeklyTradesGraph />
               </Item>

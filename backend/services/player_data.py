@@ -27,7 +27,7 @@ async def get_top_players() -> List[TopPlayer]:
                 "total_points": player["total_points"]
             }
             for player in player_data
-            if float(player["form"]) > 6 and player["minutes"] > 0
+            if float(player["form"]) > 5 and player["minutes"] > 0
         ]
 
         # Sort by form descending, then by points_per_game descending

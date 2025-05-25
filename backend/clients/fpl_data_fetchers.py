@@ -1,20 +1,5 @@
 import clients.fpl_api_clients as fpl_api_clients
 
-async def get_matches(league_code: int):
-    response = await fpl_api_clients.get_fpl_details(league_code)
-
-    if "standings" not in response:
-        return []    
-
-    return response["matches"]
-
-async def get_standings(league_code: int):
-    response = await fpl_api_clients.get_fpl_details(league_code)
-
-    if "standings" not in response:
-        return []    
-
-    return response["standings"]
 
 async def get_transactions(league_code: int):
     response = await fpl_api_clients.get_fpl_transactions(league_code)
@@ -61,8 +46,9 @@ async def get_league_info(league_code: int):
     
     return response["league"]
 
-async def get_entry_names(league_code: int):
-    league_entries = await get_league_entries(league_code)
+async def get_entry_names(league_entries: list = None):
+    if league_entries is None:
+        return {}
     entry_names = {entry["id"]: entry["entry_name"] for entry in league_entries}
     return entry_names
 

@@ -1,4 +1,5 @@
-from clients.fpl_data_fetchers import get_entry_names, get_matches, get_upcoming_gameweek
+from clients.fpl_data_fetchers import get_entry_names, get_upcoming_gameweek
+from clients.fpl_api_clients import get_fpl_details
 from models import ManagerWeeklyPoints, ManagerMatchPoints, MatchPoints, WeeklyPoints, WeeklyStats
 from typing import List
 import logging
@@ -13,15 +14,17 @@ async def weekly_total_points(league_code: int) -> List[ManagerWeeklyPoints]:
             logger.info("Gameweek one, no top players yet.")
             return []
         
-        entry_names = await get_entry_names(league_code)
+        league_details = await get_fpl_details(league_code)
+        
+        entry_names = await get_entry_names(league_details["league_entries"])
         if not entry_names:
             logger.error("Failed to get entry names")
             return []
         
-        matches = await get_matches(league_code)
-        if not matches:
+        matches = league_details["matches"]
+        if "matches" not in league_details:
             logger.error("Failed to get matches")
-            return []
+            return []  
 
         team_points_list = [
             ManagerWeeklyPoints(team_name=entry_name, points_by_gameweek=[])
@@ -105,13 +108,15 @@ async def get_match_points_data(league_code: int) -> MatchPoints:
             logger.info("Gameweek one, no top players yet.")
             return MatchPoints()
         
-        entry_names = await get_entry_names(league_code)
+        league_details = await get_fpl_details(league_code)
+        
+        entry_names = await get_entry_names(league_details["league_entries"])
         if not entry_names:
             logger.error("Failed to get entry names")
             return MatchPoints()
         
-        matches = await get_matches(league_code)
-        if not matches:
+        matches = league_details["matches"]
+        if "matches" not in league_details:
             logger.error("Failed to get matches")
             return MatchPoints()
         

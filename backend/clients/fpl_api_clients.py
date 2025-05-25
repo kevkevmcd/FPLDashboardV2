@@ -1,8 +1,6 @@
 import httpx
 import logging
 
-#LEAGUE_CODE = 192
-
 logger = logging.getLogger(__name__)
 
 async def get_fpl_details(league_code: int):

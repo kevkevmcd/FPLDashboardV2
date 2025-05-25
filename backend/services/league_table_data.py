@@ -1,6 +1,7 @@
 import logging
 from typing import Dict, List
-from clients.fpl_data_fetchers import get_choices, get_entry_names, get_league_entries, get_standings, get_transactions, get_upcoming_gameweek
+from clients.fpl_data_fetchers import get_choices, get_entry_names, get_league_entries, get_transactions, get_upcoming_gameweek
+from clients.fpl_api_clients import get_fpl_details
 from models import Manager, ManagerWeeklyTrades
 
 logger = logging.getLogger(__name__)
@@ -66,9 +67,10 @@ async def get_pick_order(league_code: int) -> Dict[str, int]:
 
 async def get_manager_data(league_code: int) -> List[Manager]:
     try:
-        # TODO: I don't need to call these separately, they both call the same endpoint
-        entry_names = await get_entry_names(league_code)
-        standings = await get_standings(league_code)
+        league_details = await get_fpl_details(league_code)
+
+        entry_names = await get_entry_names(league_details["league_entries"])
+        standings = league_details["standings"]
         result = []
 
         if not entry_names or not standings:

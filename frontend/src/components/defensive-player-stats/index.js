@@ -34,7 +34,7 @@ function DefensivePlayerStatCards() {
     <>
       {statEntries.map((stat, index) =>
         stat.data && (
-          <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid key={index} size={{ xs: 12, sm: 12, md: 6, lg: 3 }}>
             <Item>
               <Card sx={{ display: 'flex', alignItems: 'center', padding: 1 }}>
                   <CardMedia

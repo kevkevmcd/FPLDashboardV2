@@ -23,6 +23,7 @@ function InFormPlayers() {
         bgcolor: 'background.paper',
         borderRadius: 2,
         boxShadow: 1,
+        mx: 'auto',
       }}
     >
       <Typography variant="h6" component="div" sx={{ mb: 2 }}>
