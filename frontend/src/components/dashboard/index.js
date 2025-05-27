@@ -37,8 +37,7 @@ function Dashboard({ gameweek }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            minHeight: '60vh',
-            width: '100vw',
+            minHeight: '100vh',
           }}
         >
           <Card sx={{ minWidth: 300, p: 2, boxShadow: 3 }}>
