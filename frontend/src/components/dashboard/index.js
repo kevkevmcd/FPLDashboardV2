@@ -34,10 +34,11 @@ function Dashboard({ gameweek }) {
       {!gameweek ? (
         <Box
           sx={{
+            width: '100%',
+            height: '100vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            minHeight: '100vh',
           }}
         >
           <Card sx={{ minWidth: 300, p: 2, boxShadow: 3 }}>
