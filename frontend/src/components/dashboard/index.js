@@ -41,19 +41,25 @@ function Dashboard({ gameweek }) {
             alignItems: 'center',
           }}
         >
-          <Card sx={{ minWidth: 300, p: 2, boxShadow: 3 }}>
+          <Card             
+            sx={{
+              width: { xs: '90vw', sm: 400, md: 400, lg: 500 },
+              maxWidth: 600,
+              p: 2,
+              boxShadow: 3,
+              bgcolor: 'background.paper',
+              opacity: 0.95,
+            }}
+          >
             <CardContent>
               <Typography
                 variant="h5"
                 sx={{
                   fontWeight: 'bold',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
                   textAlign: 'center',
                 }}
               >
-                Come Back When Next Season Starts!
+                Come Back Next Season!
               </Typography>
             </CardContent>
           </Card>
