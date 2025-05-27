@@ -71,7 +71,7 @@ function DashboardLayoutBranding({ leagues, selectedLeague, setSelectedLeague })
       branding={{
         logo: <img src={leaguelogo} alt={selectedLeague.name} />,
         title: (
-          <Typography variant="h5" color="#42a5f5">
+          <Typography variant="h5" color="#42a5f5" sx={{fontSize: { xs: '1rem', sm: '1.2rem', md: '1.5rem'}}}>
             <Select
               value={selectedLeague.code}
               onChange={e => {
@@ -80,7 +80,7 @@ function DashboardLayoutBranding({ leagues, selectedLeague, setSelectedLeague })
               }}
               variant="standard"
               disableUnderline
-              sx={{ color: "#42a5f5", fontWeight: "bold", fontSize: "1.2rem" }}
+              sx={{ color: "#42a5f5", fontWeight: "bold" }}
             >
               {leagues.map(league => (
                 <MenuItem key={league.code} value={league.code}>
@@ -88,10 +88,17 @@ function DashboardLayoutBranding({ leagues, selectedLeague, setSelectedLeague })
                 </MenuItem>
               ))}
             </Select>
-            {' - '}
-            <span style={{ color: '#ff5722', fontSize: '1.2rem', fontWeight: 'bold' }}>
-              Gameweek {data.leagueData.gameweek}
-            </span>
+            {data.leagueData?.gameweek ? (
+              <>
+                <span style={{
+                  color: '#ff5722',
+                  fontSize: 'inherit',
+                  fontWeight: 'bold'
+                }}>
+                  Gameweek {data.leagueData.gameweek}
+                </span>
+              </>
+            ) : null}
           </Typography>
         ),
       }}
