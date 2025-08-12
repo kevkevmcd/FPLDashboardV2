@@ -4,8 +4,8 @@ import { ChartsProvider, TableProvider } from './contexts';
 import React, { useState } from 'react';
 
 const LEAGUES = [
-  { code: 192, name: "Game of Stones 1" },
-  { code: 492, name: "Game of Stones 2" },
+  { code: 157, name: "Game of Stones - League A" },
+  { code: 461, name: "Game of Stones - League B" },
 ];
 
 function App() {
