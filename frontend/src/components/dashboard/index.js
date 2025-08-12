@@ -28,7 +28,12 @@ const Item = styled(Paper)(({ theme }) => ({
   }),
 }));
 
-function Dashboard({ gameweek }) {
+function Dashboard({ gameweek, leagueName }) {
+  let cardText = "Come Back Next Season!";
+  if (!gameweek && leagueName) {
+    cardText = "Season is Starting Soon!";
+  }
+
   return (
     <>
       {!gameweek ? (
@@ -59,7 +64,7 @@ function Dashboard({ gameweek }) {
                   textAlign: 'center',
                 }}
               >
-                Come Back Next Season!
+                {cardText}
               </Typography>
             </CardContent>
           </Card>

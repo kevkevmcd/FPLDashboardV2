@@ -113,7 +113,7 @@ function DashboardLayoutBranding({ leagues, selectedLeague, setSelectedLeague })
         backgroundPosition: 'center',
         display: 'flex',
       }}>
-          <Dashboard gameweek={data.leagueData.gameweek}/>
+          <Dashboard gameweek={data.leagueData.gameweek} leagueName={data.leagueData.league_name}/>
           </div>
         </DashboardLayout>
     </AppProvider>
