@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class Manager(BaseModel):
     id: int
@@ -8,7 +9,7 @@ class Manager(BaseModel):
     total_trades: int
     point_difference: int
     pick: int
-    position: int
+    position: Optional [int] = None
     wins: int
     draws: int
     losses: int
